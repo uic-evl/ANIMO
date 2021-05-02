@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import {TriangleDownIcon, TriangleUpIcon} from '@chakra-ui/icons'
 
-const Table = ({columns, data, hiddenColumns = []}) => {
+const Table = ({columns, data, onRowClick, hiddenColumns = []}) => {
   const [filterInput, setFilterInput] = useState('')
 
   const {
@@ -89,7 +89,14 @@ const Table = ({columns, data, hiddenColumns = []}) => {
           {page.map((row, i) => {
             prepareRow(row)
             return (
-              <Tr {...row.getRowProps()} onClick={() => console.log(row.cells)}>
+              <Tr
+                {...row.getRowProps()}
+                onClick={() => {
+                  if (onRowClick) {
+                    onRowClick(row.values)
+                  }
+                }}
+              >
                 {row.cells.map(cell => {
                   return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
                 })}

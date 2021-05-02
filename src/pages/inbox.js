@@ -1,23 +1,14 @@
 import {useMemo} from 'react'
 import {useQuery} from 'react-query'
+import {useHistory} from 'react-router-dom'
 import Table from '../components/table'
 import {Heading, Box} from '@chakra-ui/react'
 import {fetchTasks} from '../api/index'
-
-const dateAccessor = (d, field) => {
-  return !d[field]
-    ? '--'
-    : new Date(d[field]).toLocaleDateString(navigator.language, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      })
-}
+import {dateAccessor} from '../utils/format'
 
 const InboxPage = () => {
   const {isLoading, isError, data, error} = useQuery('tasks', fetchTasks)
+  const history = useHistory()
 
   const tableColumns = useMemo(
     () => [
@@ -33,15 +24,18 @@ const InboxPage = () => {
           },
           {Header: 'Status', accessor: 'status'},
           {Header: 'Start Date', accessor: d => dateAccessor(d, 'startDate')},
-          {
-            Header: 'End Date',
-            accessor: d => dateAccessor(d, 'endDate'),
-          },
+          {Header: 'End Date', accessor: d => dateAccessor(d, 'endDate')},
+          {Header: 'DocumentId', accessor: 'documentId'},
         ],
       },
     ],
     [],
   )
+
+  const handleRowClick = values => {
+    const {_id, documentId} = values
+    history.push(`/label/${_id}/${documentId}/undefined/undefined`)
+  }
 
   if (isLoading) {
     return <span>Loading ...</span>
@@ -57,7 +51,12 @@ const InboxPage = () => {
         Inbox
       </Heading>
       <Box pl="2.5" pr="2.5">
-        <Table columns={tableColumns} data={data} hiddenColumns={['_id']} />
+        <Table
+          columns={tableColumns}
+          data={data}
+          hiddenColumns={['_id', 'documentId']}
+          onRowClick={handleRowClick}
+        />
       </Box>
     </div>
   )

@@ -19,7 +19,7 @@ const AuthenticatedApp = () => {
             <Route path="/inbox">
               <InboxPage />
             </Route>
-            <Route path="/label">
+            <Route path="/label/:taskId/:documentId/:figureId?/:subfigureId?">
               <LabelPage />
             </Route>
             <Route path="/search">
