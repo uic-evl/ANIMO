@@ -1,5 +1,21 @@
 import {useState} from 'react'
 import {useTable, useFilters, useSortBy, usePagination} from 'react-table'
+import {
+  Table as ChakraTable,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  chakra,
+  Input,
+  Button,
+  Flex,
+  Center,
+  Spacer,
+  Select,
+} from '@chakra-ui/react'
+import {TriangleDownIcon, TriangleUpIcon} from '@chakra-ui/icons'
 
 const Table = ({columns, data, hiddenColumns = []}) => {
   const [filterInput, setFilterInput] = useState('')
@@ -42,90 +58,108 @@ const Table = ({columns, data, hiddenColumns = []}) => {
 
   return (
     <>
-      <input
+      <Input
         value={filterInput}
         onChange={handleFilterChange}
         placeholder="Search description"
       />
 
-      <table {...getTableProps()}>
-        <thead>
+      <ChakraTable {...getTableProps()} mt="10px" variant="striped">
+        <Thead>
           {headerGroups.map((headerGroup, i) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={
-                    column.isSorted
-                      ? column.isSortedDesc
-                        ? 'sort-desc'
-                        : 'sort-asc'
-                      : ''
-                  }
-                >
+                <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render('Header')}
-                </th>
+                  <chakra.span pl="4">
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <TriangleDownIcon aria-label="sorted descending" />
+                      ) : (
+                        <TriangleUpIcon aria-label="sorted ascending" />
+                      )
+                    ) : null}
+                  </chakra.span>
+                </Th>
               ))}
-            </tr>
+            </Tr>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
           {page.map((row, i) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} onClick={() => console.log(row.cells)}>
+              <Tr {...row.getRowProps()} onClick={() => console.log(row.cells)}>
                 {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
                 })}
-              </tr>
+              </Tr>
             )
           })}
-        </tbody>
-      </table>
-      <div className="table-pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <span>
-          | Go to page:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
-            }}
-            style={{width: '100px'}}
-          />
-        </span>{' '}
-        <select
+        </Tbody>
+      </ChakraTable>
+
+      <Flex width="100%" mt="5px">
+        <Center>
+          <Button
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+            mr="1.5"
+          >
+            {'<<'}
+          </Button>{' '}
+          <Button
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            mr="1.5"
+          >
+            {'<'}
+          </Button>{' '}
+          <Button onClick={() => nextPage()} disabled={!canNextPage} mr="1.5">
+            {'>'}
+          </Button>{' '}
+          <Button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {'>>'}
+          </Button>{' '}
+        </Center>
+        <Center>
+          <chakra.span pl="2.5">
+            Page{' '}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{' '}
+          </chakra.span>
+          <chakra.span ml="1.5">
+            | Go to page:{' '}
+            <Input
+              type="number"
+              defaultValue={pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                gotoPage(page)
+              }}
+              style={{width: '70px'}}
+            />
+          </chakra.span>{' '}
+        </Center>
+        <Spacer />
+        <Select
           value={pageSize}
           onChange={e => {
             setPageSize(Number(e.target.value))
           }}
+          w="150px"
         >
           {[10, 20, 30, 40, 50].map(pageSize => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
           ))}
-        </select>
-      </div>
+        </Select>
+      </Flex>
     </>
   )
 }

@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
+import {ColorModeScript} from '@chakra-ui/react'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import theme from './theme'
 
 if (process.env.NODE_ENV === 'development') {
   const {worker} = require('./mocks/browser')
@@ -11,6 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 
 ReactDOM.render(
   <React.StrictMode>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
   </React.StrictMode>,
   document.getElementById('root'),

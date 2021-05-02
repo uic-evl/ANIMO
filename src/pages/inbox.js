@@ -1,31 +1,47 @@
 import {useMemo} from 'react'
 import {useQuery} from 'react-query'
-import axios from 'axios'
 import Table from '../components/table'
+import {Heading, Box} from '@chakra-ui/react'
+import {fetchTasks} from '../api/index'
+
+const dateAccessor = (d, field) => {
+  return !d[field]
+    ? '--'
+    : new Date(d[field]).toLocaleDateString(navigator.language, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+      })
+}
 
 const InboxPage = () => {
-  const fetchTasks = async () => {
-    return axios
-      .get('http://localhost:3000/api/tasks')
-      .then(res => res.data.results)
-  }
-
   const {isLoading, isError, data, error} = useQuery('tasks', fetchTasks)
 
-  const tableColumns = useMemo(() => [
-    {
-      Header: 'Tasks',
-      columns: [
-        {Header: 'Id', accessor: '_id'},
-        {Header: 'Description', accessor: 'description'},
-        {Header: 'Type', accessor: 'type'},
-        {Header: 'Creation Date', accessor: 'creationDate'},
-        {Header: 'Status', accessor: 'status'},
-        {Header: 'Start Date', accessor: 'startDate'},
-        {Header: 'End Date', accessor: 'endDate'},
-      ],
-    },
-  ])
+  const tableColumns = useMemo(
+    () => [
+      {
+        Header: 'My Tasks',
+        columns: [
+          {Header: 'Id', accessor: '_id'},
+          {Header: 'Description', accessor: 'description'},
+          {Header: 'Type', accessor: 'type'},
+          {
+            Header: 'Creation Date',
+            accessor: d => dateAccessor(d, 'creationDate'),
+          },
+          {Header: 'Status', accessor: 'status'},
+          {Header: 'Start Date', accessor: d => dateAccessor(d, 'startDate')},
+          {
+            Header: 'End Date',
+            accessor: d => dateAccessor(d, 'endDate'),
+          },
+        ],
+      },
+    ],
+    [],
+  )
 
   if (isLoading) {
     return <span>Loading ...</span>
@@ -37,8 +53,12 @@ const InboxPage = () => {
 
   return (
     <div>
-      <h2>Inbox Page</h2>
-      <Table columns={tableColumns} data={data} hiddenColumns={['_id']} />
+      <Heading as="h1" pb="2.5" pl="2.5">
+        Inbox
+      </Heading>
+      <Box pl="2.5" pr="2.5">
+        <Table columns={tableColumns} data={data} hiddenColumns={['_id']} />
+      </Box>
     </div>
   )
 }
