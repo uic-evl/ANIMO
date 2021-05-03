@@ -2,24 +2,24 @@
     {
       "_id": "1",
       "name": "A.pdf",
-      "pubmedId": "15350224",
-      "entityId": null,
+      "pubmed_id": "15350224",
+      "entity_id": null,
       "uri": "/p15350224/15350224.pdf",
       "username": "jtrell2"
     },
     {
         "_id": "3",
         "name": "B.pdf",
-        "pubmedId": "15350224",
-        "entityId": null,
+        "pubmed_id": "15350224",
+        "entity_id": null,
         "uri": "/p15350224/15350224.pdf",
         "username": "jtrell2"
       },
       {
         "_id": "2",
         "name": "C.pdf",
-        "pubmedId": "15350224",
-        "entityId": null,
+        "pubmed_id": "15350224",
+        "entity_id": null,
         "uri": "/p15350224/15350224.pdf",
         "username": "jtrell2"
       }

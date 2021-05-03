@@ -1,10 +1,11 @@
-import {useParams} from 'react-router-dom'
+import {useParams, useHistory} from 'react-router-dom'
 import {useQuery} from 'react-query'
 import {fetchTaskById, fetchDocumentById, finishTask} from '../api/index'
 import LabelHeader from '../components/label-header'
 
 const LabelPage = () => {
   const {taskId, documentId, figureId, subfigureId} = useParams()
+  const history = useHistory()
 
   const taskQuery = useQuery(['task', taskId], () => fetchTaskById(taskId))
 
@@ -20,8 +21,11 @@ const LabelPage = () => {
     return <span>Error: {docQuery.error.message}</span>
   }
 
-  const onFinishClick = task => {
-    finishTask(task._id)
+  const onFinishClick = async task => {
+    const updatedTask = await finishTask(task._id)
+    console.log(updatedTask)
+    // add mutation here
+    history.push(`/inbox`)
   }
 
   return (
