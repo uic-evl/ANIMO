@@ -18,8 +18,17 @@ export const fetchDocumentById = async id => {
     .then(res => res.data.results)
 }
 
-export const finishTask = async id => {
+export const startTask = async values => {
+  const {_id} = values
   return axios
-    .patch(`http://localhost:3000/api/tasks/${id}/finish`)
+    .patch(`http://localhost:3000/api/tasks/${_id}/start`)
+    .then(res => res.data.results)
+}
+
+export const finishTask = async values => {
+  // TODO: capture here an error with username?
+  const {_id, username} = values
+  return axios
+    .patch(`http://localhost:3000/api/tasks/${_id}/finish`, {username})
     .then(res => res.data.results)
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {Flex, Button, Spacer, Heading} from '@chakra-ui/react'
+import {TASK_IN_PROCESS} from '../utils/constants'
 
 const LabelHeader = ({task, document, onFinishClick}) => {
   const handleFinishClick = () => {
@@ -19,7 +20,7 @@ const LabelHeader = ({task, document, onFinishClick}) => {
         colorScheme="teal"
         mr="2.5"
         onClick={handleFinishClick}
-        isDisabled={task.status !== 'To Review'}
+        isDisabled={task.status !== TASK_IN_PROCESS}
       >
         Finish Task
       </Button>
