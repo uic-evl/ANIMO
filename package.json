@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@mswjs/data": "^0.3.0",
     "msw": "^0.28.2",
     "prettier": "^2.2.1"
   },
