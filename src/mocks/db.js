@@ -1,6 +1,7 @@
 import {factory, primaryKey} from '@mswjs/data'
 import tasksData from './data/tasks.json'
 import documentData from './data/documents.json'
+import figureData from './data/figures.json'
 
 export const db = factory({
   task: {
@@ -24,7 +25,29 @@ export const db = factory({
     entityId: () => '',
     username: () => 'johndoe',
   },
+  figure: {
+    _id: primaryKey(String),
+    name: () => 'figure',
+    type: () => 'Figure',
+    state: () => '',
+    caption: () => '',
+    observations: () => '',
+    needsCropping: () => false,
+    isCompound: () => false,
+    isOvercropped: () => false,
+    isMissingSubfigures: () => false,
+    isMissingPanels: () => false,
+    isOverfragmented: () => false,
+    closeUp: () => false,
+    numberSubpanes: () => 0,
+    docId: () => '',
+    uri: () => '',
+    subfigures: () => [],
+    composition: () => '',
+    modalities: () => [],
+  },
 })
 
 tasksData.forEach(task => db.task.create(task))
 documentData.forEach(document => db.document.create(document))
+figureData.forEach(figure => db.figure.create(figure))

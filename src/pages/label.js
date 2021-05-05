@@ -6,8 +6,10 @@ import {
   fetchDocumentById,
   startTask,
   finishTask,
+  fetchDocumentFigures,
 } from '../api/index'
 import LabelHeader from '../components/label-header'
+import DocumentFigures from '../components/doc-figures'
 import {TASK_ASSIGNED} from '../utils/constants'
 
 const HARDCODED_USERNAME = 'jtrell2'
@@ -21,6 +23,10 @@ const LabelPage = () => {
 
   const docQuery = useQuery(['document', documentId], () =>
     fetchDocumentById(documentId),
+  )
+
+  const figsQuery = useQuery(['figures'], () =>
+    fetchDocumentFigures(documentId),
   )
 
   const startMutation = useMutation(values => startTask(values), {
@@ -62,6 +68,14 @@ const LabelPage = () => {
           finishMutation.mutate({_id: task._id, username: HARDCODED_USERNAME})
         }
       />
+
+      {figsQuery.isLoading ? (
+        'Loading images ...'
+      ) : figsQuery.isError ? (
+        'error loading images ...'
+      ) : (
+        <DocumentFigures figures={figsQuery.data} />
+      )}
     </div>
   )
 }

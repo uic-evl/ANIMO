@@ -85,6 +85,7 @@ const finishTask = async (req, res, ctx) => {
 
 const fetchDocumentById = (req, res, ctx) => {
   const {id} = req.params
+  console.log('document', id)
 
   const document = db.document.findFirst({where: {_id: {equals: id}}})
   if (document) {
@@ -104,10 +105,33 @@ const fetchDocumentById = (req, res, ctx) => {
   }
 }
 
+const fetchDocumentFigures = (req, res, ctx) => {
+  const {id} = req.params
+  console.log('fetch figures for', id)
+
+  const figures = db.figure.getAll({where: {docId: {equals: id}}})
+  if (figures) {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        results: figures,
+      }),
+    )
+  } else {
+    return res(
+      ctx.status(403),
+      ctx.json({
+        errorMessage: `Figures not found`,
+      }),
+    )
+  }
+}
+
 export const worker = setupWorker(
   rest.get('/api/tasks', fetchTasks),
   rest.get('/api/tasks/:id', fetchTaskById),
   rest.patch('/api/tasks/:id/finish', finishTask),
   rest.patch('/api/tasks/:id/start', startTask),
+  rest.get('/api/documents/:id/figures', fetchDocumentFigures),
   rest.get('/api/documents/:id', fetchDocumentById),
 )

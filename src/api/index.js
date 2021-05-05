@@ -32,3 +32,9 @@ export const finishTask = async values => {
     .patch(`http://localhost:3000/api/tasks/${_id}/finish`, {username})
     .then(res => res.data.results)
 }
+
+export const fetchDocumentFigures = async id => {
+  return axios
+    .get(`http://localhost:3000/api/documents/${id}/figures`)
+    .then(res => res.data.results)
+}
