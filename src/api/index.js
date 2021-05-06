@@ -38,3 +38,15 @@ export const fetchDocumentFigures = async id => {
     .get(`http://localhost:3000/api/documents/${id}/figures`)
     .then(res => res.data.results)
 }
+
+export const fetchSubfigures = async id => {
+  return axios
+    .get(`http://localhost:3000/api/figures/${id}/subfigures`)
+    .then(res => res.data.results)
+}
+
+export const fetchModalities = async name => {
+  return axios
+    .get(`http://localhost:3000/api/modalities/${name}`)
+    .then(res => res.data.results)
+}

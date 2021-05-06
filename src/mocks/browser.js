@@ -1,6 +1,10 @@
 import {setupWorker, rest} from 'msw'
 import {db} from './db'
+// cannot import recursive relationships with mswjs/data
+// import modalities from './data/modalities.json'
 import * as constants from '../utils/constants'
+
+const modalities = require('./data/modalities.json')
 
 const fetchTasks = (_, res, ctx) => {
   return res(
@@ -109,7 +113,9 @@ const fetchDocumentFigures = (req, res, ctx) => {
   const {id} = req.params
   console.log('fetch figures for', id)
 
-  const figures = db.figure.getAll({where: {docId: {equals: id}}})
+  const figures = db.figure.findMany({
+    where: {docId: {equals: id}, type: {equals: constants.FIGURE}},
+  })
   if (figures) {
     return res(
       ctx.status(200),
@@ -127,11 +133,71 @@ const fetchDocumentFigures = (req, res, ctx) => {
   }
 }
 
+const fetchSubfigures = (req, res, ctx) => {
+  const {id} = req.params
+
+  const subfigures = db.figure.findMany({
+    where: {figureId: {equals: id}, type: {equals: constants.SUBFIGURE}},
+  })
+  if (subfigures) {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        results: subfigures,
+      }),
+    )
+  } else {
+    return res(
+      ctx.status(403),
+      ctx.json({
+        errorMessage: `Subfigures not found`,
+      }),
+    )
+  }
+}
+
+const fetchModalities = (req, res, ctx) => {
+  const {name} = req.params
+
+  const tree = modalities.find(m => m.name === name)
+  if (tree) {
+    const rows = []
+    let fringe = tree.modalities
+
+    while (fringe.length > 0) {
+      const node = fringe.shift()
+      if (node.isRow) {
+        rows.push(node)
+      } else {
+        if (node.children) {
+          fringe = fringe.concat(node.children)
+        }
+      }
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        results: rows,
+      }),
+    )
+  } else {
+    return res(
+      ctx.status(403),
+      ctx.json({
+        errorMessage: `Modality tree not found`,
+      }),
+    )
+  }
+}
+
 export const worker = setupWorker(
   rest.get('/api/tasks', fetchTasks),
   rest.get('/api/tasks/:id', fetchTaskById),
   rest.patch('/api/tasks/:id/finish', finishTask),
   rest.patch('/api/tasks/:id/start', startTask),
-  rest.get('/api/documents/:id/figures', fetchDocumentFigures),
   rest.get('/api/documents/:id', fetchDocumentById),
+  rest.get('/api/documents/:id/figures', fetchDocumentFigures),
+  rest.get('/api/figures/:id/subfigures', fetchSubfigures),
+  rest.get('/api/modalities/:name', fetchModalities),
 )
