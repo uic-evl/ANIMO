@@ -136,10 +136,17 @@ const fetchDocumentFigures = (req, res, ctx) => {
 const fetchSubfigures = (req, res, ctx) => {
   const {id} = req.params
 
-  const subfigures = db.figure.findMany({
+  let subfigures = db.figure.findMany({
     where: {figureId: {equals: id}, type: {equals: constants.SUBFIGURE}},
   })
   if (subfigures) {
+    for (let sf of subfigures) {
+      if (sf.modalities === '') {
+        sf.modalities = []
+      } else {
+        sf.modalities = sf.modalities.split(',')
+      }
+    }
     return res(
       ctx.status(200),
       ctx.json({
@@ -191,6 +198,29 @@ const fetchModalities = (req, res, ctx) => {
   }
 }
 
+const updateFigure = (req, res, ctx) => {
+  const {id} = req.params
+  const {modalities} = req.body
+
+  const data = {}
+  if (modalities) {
+    data.modalities = modalities.join()
+  }
+
+  const results = db.figure.update({where: {_id: {equals: id}}, data})
+
+  if (results) {
+    return res(ctx.status(200), ctx.json({results}))
+  } else {
+    return res(
+      ctx.status(403),
+      ctx.json({
+        errorMessage: `Error updating subfigure`,
+      }),
+    )
+  }
+}
+
 export const worker = setupWorker(
   rest.get('/api/tasks', fetchTasks),
   rest.get('/api/tasks/:id', fetchTaskById),
@@ -200,4 +230,5 @@ export const worker = setupWorker(
   rest.get('/api/documents/:id/figures', fetchDocumentFigures),
   rest.get('/api/figures/:id/subfigures', fetchSubfigures),
   rest.get('/api/modalities/:name', fetchModalities),
+  rest.patch('/api/figures/:id', updateFigure),
 )

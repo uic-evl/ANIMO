@@ -1,4 +1,4 @@
-import {factory, manyOf, primaryKey} from '@mswjs/data'
+import {factory, manyOf, primaryKey, string} from '@mswjs/data'
 import tasksData from './data/tasks.json'
 import documentData from './data/documents.json'
 import figureData from './data/figures.json'
@@ -46,8 +46,9 @@ export const db = factory({
     uri: () => '',
     subfigures: () => [],
     composition: () => '',
-    modalities: () => [],
+    modalities: () => '',
   },
+
   // modalityNode: {
   //   _id: primaryKey(String),
   //   name: () => '',

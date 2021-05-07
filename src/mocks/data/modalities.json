@@ -1,53 +1,53 @@
 [
     {
-        "_id": 1,
+        "_id": "1",
         "name": "curation",
         "modalities": [
             {
-                "_id": 1,
+                "_id": "1",
                 "name": "Experimental",
                 "shortname": "Experimental",
                 "isRow": false,
                 "children": [
                     {
-                        "_id": 2,
+                        "_id": "2",
                         "name": "Gel",
                         "shortname": "Gel",
                         "isRow": true,
                         "children": [
                             {
-                                "_id": 3,
+                                "_id": "3",
                                 "name": "Western blot",
                                 "shortname": "Western",
                                 "children": []
                             },
                             {
-                                "_id": 4,
+                                "_id": "4",
                                 "name": "Northern blot",
                                 "shortname": "Northern",
                                 "children": []
                             },
                             {
-                                "_id": 5,
+                                "_id": "5",
                                 "name": "RT_PCR",
                                 "shortname": "RT_PCR",
                                 "children": []
                             },
                             {
-                                "_id": 6,
+                                "_id": "6",
                                 "name": "Other",
                                 "shortname": "Other",
                                 "children": []
                             }
                         ]
                     }, {
-                        "_id": 7,
+                        "_id": "7",
                         "name": "Plate",
                         "shortname": "Plate",
                         "isRow": true,
                         "children": [
                             {
-                                "_id": 43,
+                                "_id": "43",
                                 "name": "Plate",
                                 "shortname": "Plate",
                                 "isRow": false,
@@ -56,46 +56,46 @@
                         ]
                     },
                     {
-                        "_id": 8,
+                        "_id": "8",
                         "name": "Microscopy",
                         "isRow": false,
                         "children": [
                             {
-                                "_id": 9,
+                                "_id": "9",
                                 "name": "Fluorescence",
                                 "shortname": "Fluorescence",
                                 "isRow": true,
                                 "children": [
                                     {
-                                        "_id": 10,
+                                        "_id": "10",
                                         "name": "Whole Mount",
                                         "shortname": "Whole mount",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 11,
+                                        "_id": "11",
                                         "name": "InSitu Hybridization",
                                         "shortname": "InSitu hyb.",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 12,
+                                        "_id": "12",
                                         "name": "Reporter Genes and Inmunohistochemistry",
                                         "shortname": "Reporter genes & IHC",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 13,
+                                        "_id": "13",
                                         "name": "EFIC",
                                         "shortname": "EFIC",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 14,
+                                        "_id": "14",
                                         "name": "Other",
                                         "shortname": "Other",
                                         "isRow": false,
@@ -104,34 +104,34 @@
                                 ]
                             },
                             {
-                                "_id": 15,
+                                "_id": "15",
                                 "name": "Light",
                                 "shortname": "Light mic.",
                                 "isRow": true,
                                 "children": [
                                     {
-                                        "_id": 16,
+                                        "_id": "16",
                                         "name": "Whole Mount",
                                         "shortname": "Whole mount",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 17,
+                                        "_id": "17",
                                         "name": "InSitu Hybridization",
                                         "shortname": "InSitu hyb.",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 18,
+                                        "_id": "18",
                                         "name": "Reporter Genes and Inmunohistochemistry",
                                         "shortname": "Reporter genes & IHC",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 19,
+                                        "_id": "19",
                                         "name": "Other",
                                         "shortname": "Other",
                                         "isRow": false,
@@ -140,27 +140,27 @@
                                 ]
                             },
                             {
-                                "_id": 20,
+                                "_id": "20",
                                 "name": "Electron",
                                 "shortname": "Electron mic.",
                                 "isRow": true,
                                 "children": [
                                     {
-                                        "_id": 21,
+                                        "_id": "21",
                                         "name": "Transmission",
                                         "shortname": "Transmission",
                                         "isRow": false,
                                         "children": []
                                     },
                                     {
-                                        "_id": 22,
+                                        "_id": "22",
                                         "name": "Scanning",
                                         "shortname": "Scanning",
                                         "isRow": false,
                                         "children": []
                                     },                                    
                                     {
-                                        "_id": 23,
+                                        "_id": "23",
                                         "name": "Other",
                                         "shortname": "Other",
                                         "isRow": false,
@@ -173,48 +173,48 @@
                 ]                                    
             },
             {
-                "_id": 24,
+                "_id": "24",
                 "name": "Graphics",
                 "shortname": "Graphics",
                 "isRow": true,
                 "children": [
                     {
-                        "_id": 25,
+                        "_id": "25",
                         "name": "Histogram",
                         "shortname": "Histogram",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 26,
+                        "_id": "26",
                         "name": "Line Chart",
                         "shortname": "Line chart",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 27,
+                        "_id": "27",
                         "name": "Scatterplot",
                         "shortname": "Scatterplot",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 28,
+                        "_id": "28",
                         "name": "Graph",
                         "shortname": "Graph",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 29,
+                        "_id": "29",
                         "name": "Heatmap",
                         "shortname": "Heatmap",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 30,
+                        "_id": "30",
                         "name": "Other",
                         "shortname": "Other",
                         "isRow": false,
@@ -223,34 +223,34 @@
                 ]
             },
             {
-                "_id": 31,
+                "_id": "31",
                 "name": "Organs and Organisms",
                 "shortname": "Organs/Organisms",
                 "isRow": true,
                 "children": [
                     {
-                        "_id": 32,
+                        "_id": "32",
                         "name": "X-Ray",
                         "shortname": "X-ray",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 33,
+                        "_id": "33",
                         "name": "MRI & CT",
                         "shortname": "MRI & CT",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 34,
+                        "_id": "34",
                         "name": "Photos",
                         "shortname": "Photos",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 35,
+                        "_id": "35",
                         "name": "Other",
                         "shortname": "Other",
                         "isRow": false,
@@ -259,34 +259,34 @@
                 ]
             },
             {
-                "_id": 36,
+                "_id": "36",
                 "name": "Molecular Structure",
                 "shortname": "Molecular struc.",
                 "isRow": true,
                 "children": [
                     {
-                        "_id": 37,
+                        "_id": "37",
                         "name": "DNA Sequence",
                         "shortname": "DNA seq.",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 38,
+                        "_id": "38",
                         "name": "Protein Sequence",
                         "shortname": "Protein seq.",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 39,
+                        "_id": "39",
                         "name": "3D Structure",
                         "shortname": "3D struc.",
                         "isRow": false,
                         "children": []
                     },
                     {
-                        "_id": 40,
+                        "_id": "40",
                         "name": "Chemical Structure",
                         "shortname": "Chemical struc.",
                         "isRow": false,
@@ -295,13 +295,13 @@
                 ]
             },
             {
-                "_id": 41,
+                "_id": "41",
                 "name": "Other",
                 "shortname": "Other",
                 "isRow": true,
                 "children": [
                     {
-                        "_id": 42,
+                        "_id": "42",
                         "name": "Other",
                         "shortname": "Other",
                         "isRow": false,

@@ -50,3 +50,11 @@ export const fetchModalities = async name => {
     .get(`http://localhost:3000/api/modalities/${name}`)
     .then(res => res.data.results)
 }
+
+export const updateSubfigure = async values => {
+  console.log('api', values)
+  const {_id, modalities} = values
+  return axios
+    .patch(`http://localhost:3000/api/figures/${_id}`, {modalities})
+    .then(res => res.data.results)
+}
