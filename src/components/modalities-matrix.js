@@ -19,8 +19,9 @@ const Matrix = ({modalities, subfigure, onClick}) => {
 
   return (
     <Box>
-      <Box>{subfigure.name}</Box>
-      <Box>{subfigure.modalities}</Box>
+      <Box pl="5px">
+        <chakra.span fontStyle="italic">Labels</chakra.span>
+      </Box>
       {modalities.map(m => (
         <Row
           key={m.name}
@@ -45,7 +46,7 @@ const Row = ({row, selectedIds, onClickItem}) => {
       lineHeight="1.1rem"
       minWidth="550px"
     >
-      <Box backgroundColor="#fff" width="150px" flex="none">
+      <Box backgroundColor="#fff" width="120px" flex="none">
         <chakra.span fontWeight={700} display="inline-flex" alignItems="center">
           {row.shortname}
         </chakra.span>

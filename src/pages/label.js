@@ -29,12 +29,8 @@ const LabelPage = () => {
   let {figureId, subfigureId} = useParams()
 
   // when no optionals, default to null and let the hooks populate the id
-  const [selectedFigureId, setSelectedFigureId] = useState(() =>
-    checkParamId(figureId),
-  )
-  const [selectedSubfigureId, setSelectedSubfigureId] = useState(
-    checkParamId(subfigureId),
-  )
+  const [selfigId, setSelFigId] = useState(checkParamId(figureId))
+  const [selsubfigId, setSelSubfigId] = useState(checkParamId(subfigureId))
 
   const queryClient = useQueryClient()
   const history = useHistory()
@@ -50,17 +46,17 @@ const LabelPage = () => {
     async () => fetchDocumentFigures(documentId),
     {
       onSuccess: data => {
-        if (!selectedFigureId) {
-          setSelectedFigureId(data[0]._id)
+        if (!selfigId) {
+          setSelFigId(data[0]._id)
         }
       },
     },
   )
 
   const selFigQuery = useQuery(
-    ['figure', selectedFigureId],
+    ['figure', selfigId],
     () => {
-      const figure = figsQuery.data.find(f => f._id === selectedFigureId)
+      const figure = figsQuery.data.find(f => f._id === selfigId)
       if (figure) {
         return figure
       } else {
@@ -68,19 +64,19 @@ const LabelPage = () => {
       }
     },
     {
-      enabled: !!figsQuery?.data && !!selectedFigureId,
+      enabled: !!figsQuery?.data && !!selfigId,
     },
   )
 
   // hook for subfigures and selected subfigure
   const subfigQuery = useQuery(
-    ['subfigures', selectedFigureId, selectedSubfigureId],
+    ['subfigures', selfigId, selsubfigId],
     async () => {
       const subfigures = await fetchSubfigures(selFigQuery.data._id)
       let selected = null
-      if (selectedSubfigureId) {
-        selected = subfigures.find(f => f._id === selectedSubfigureId)
-      } else if (!selected || !selectedSubfigureId) {
+      if (selsubfigId) {
+        selected = subfigures.find(f => f._id === selsubfigId)
+      } else if (!selected || !selsubfigId) {
         selected = subfigures[0]
       }
       return {
@@ -89,10 +85,10 @@ const LabelPage = () => {
       }
     },
     {
-      enabled: !!selFigQuery?.data && !!selectedFigureId,
+      enabled: !!selFigQuery?.data && !!selfigId,
       onSuccess: data => {
-        if (!selectedSubfigureId) {
-          setSelectedSubfigureId(data.subfigures[0]._id)
+        if (!selsubfigId) {
+          setSelSubfigId(data.subfigures[0]._id)
         }
       },
     },
@@ -118,11 +114,7 @@ const LabelPage = () => {
 
   const subfigureMutation = useMutation(values => updateSubfigure(values), {
     onSuccess: async (data, variables) => {
-      queryClient.invalidateQueries([
-        'subfigures',
-        selectedFigureId,
-        selectedSubfigureId,
-      ])
+      queryClient.invalidateQueries(['subfigures', selfigId, selsubfigId])
     },
   })
 
@@ -143,7 +135,7 @@ const LabelPage = () => {
         h="95vh"
         w="100%"
         templateRows="50px 1fr 1fr"
-        templateColumns="200px 400px 1fr"
+        templateColumns="150px 300px 1fr"
         gap={0}
       >
         {/* task and document info header */}
@@ -180,8 +172,8 @@ const LabelPage = () => {
                 figures={figsQuery.data}
                 selectedId={selFigQuery.data._id}
                 onClick={id => {
-                  setSelectedFigureId(id)
-                  setSelectedSubfigureId(null)
+                  setSelFigId(id)
+                  setSelSubfigId(null)
                   queryClient.invalidateQueries(['subfigures', id, null])
                 }}
               />
@@ -205,7 +197,7 @@ const LabelPage = () => {
                 figure={selFigQuery.data}
                 subfigures={subfigQuery.data.subfigures}
                 onClick={id => {
-                  setSelectedSubfigureId(id)
+                  setSelSubfigId(id)
                   queryClient.invalidateQueries(['selected_subfigure', id])
                 }}
                 selectedSubfigureId={subfigQuery.data.selected._id}
@@ -225,8 +217,8 @@ const LabelPage = () => {
             'Error modalities...'
           ) : (
             <Box>
-              <Subfigure subfigure={subfigQuery.data.selected} />
               <Labeling
+                caption={selFigQuery.data.caption}
                 subfigure={subfigQuery.data.selected}
                 modalities={modalitiesQuery.data}
                 onClick={(id, values) => {

@@ -4,7 +4,6 @@ import FigureCard from '../components/figure-card'
 
 const DocumentFigures = ({figures, selectedId, onClick}) => {
   const handleOnClick = id => {
-    console.log('list onclik', id)
     onClick(id.toString())
   }
 

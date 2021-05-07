@@ -19,15 +19,11 @@ const SelectedFigure = ({figure, subfigures, onClick, selectedSubfigureId}) => {
           Selected Figure:{' '}
           <chakra.span fontWeight="bold">{figure.name}</chakra.span>
         </Text>
-        <Image
-          src={`http://localhost:8080/images${figure.uri}`}
-          alt={figure.caption}
-        />
         <Box>
-          <Text align="justify">
-            <chakra.span fontStyle="italic">Caption. </chakra.span>
-            {figure.caption}
-          </Text>
+          <Image
+            src={`http://localhost:8080/images${figure.uri}`}
+            alt={figure.caption}
+          />
         </Box>
         <Box>
           <chakra.span fontStyle="italic">Subfigures</chakra.span>
