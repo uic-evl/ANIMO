@@ -1,10 +1,8 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {Box, Flex, chakra} from '@chakra-ui/react'
 
 const Matrix = ({modalities, subfigure, onClick}) => {
-  const [selectedIds, setSelectedIds] = useState(() =>
-    subfigure.modalities ? subfigure.modalities : [],
-  )
+  const [selectedIds, setSelectedIds] = useState([])
 
   const handleOnClickItem = id => {
     const ids = selectedIds.includes(id)
@@ -14,8 +12,15 @@ const Matrix = ({modalities, subfigure, onClick}) => {
     setSelectedIds(ids)
   }
 
+  useEffect(() => {
+    const modalities = subfigure.modalities ? subfigure.modalities : []
+    setSelectedIds(modalities)
+  }, [subfigure])
+
   return (
     <Box>
+      <Box>{subfigure.name}</Box>
+      <Box>{subfigure.modalities}</Box>
       {modalities.map(m => (
         <Row
           key={m.name}

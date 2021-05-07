@@ -3,6 +3,7 @@ import {Box, Flex, Spacer, Button} from '@chakra-ui/react'
 import Matrix from '../components/modalities-matrix'
 
 const Labeling = ({subfigure, modalities, onClick}) => {
+  console.log(subfigure)
   const [selectedModalityIds, setSelectedModalityIds] = useState(() =>
     subfigure.modalities ? subfigure.modalities : [],
   )

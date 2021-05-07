@@ -202,7 +202,7 @@ const updateFigure = (req, res, ctx) => {
   const {id} = req.params
   const {modalities} = req.body
 
-  const data = {}
+  const data = {state: constants.FIGURE_REVIEWED}
   if (modalities) {
     data.modalities = modalities.join()
   }

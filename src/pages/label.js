@@ -21,22 +21,27 @@ import {TASK_ASSIGNED} from '../utils/constants'
 
 const HARDCODED_USERNAME = 'jtrell2'
 
+const checkParamId = id => (id === '0' || id === undefined ? null : id)
+
 const LabelPage = () => {
+  // always receive taskid and docid, others are optional (0 is null)
   const {taskId, documentId} = useParams()
   let {figureId, subfigureId} = useParams()
+
+  // when no optionals, default to null and let the hooks populate the id
   const [selectedFigureId, setSelectedFigureId] = useState(() =>
-    figureId === '0' || figureId === undefined ? null : figureId,
+    checkParamId(figureId),
   )
   const [selectedSubfigureId, setSelectedSubfigureId] = useState(
-    subfigureId === undefined ? null : subfigureId,
+    checkParamId(subfigureId),
   )
 
-  const history = useHistory()
   const queryClient = useQueryClient()
+  const history = useHistory()
 
-  const taskQuery = useQuery(['task', taskId], () => fetchTaskById(taskId))
-
-  const docQuery = useQuery(['document', documentId], () =>
+  // hooks for task and document to fill header
+  const task = useQuery(['task', taskId], () => fetchTaskById(taskId))
+  const document = useQuery(['document', documentId], () =>
     fetchDocumentById(documentId),
   )
 
@@ -67,39 +72,33 @@ const LabelPage = () => {
     },
   )
 
+  // hook for subfigures and selected subfigure
   const subfigQuery = useQuery(
-    ['subfigures', selectedFigureId],
-    () => fetchSubfigures(selFigQuery.data._id),
+    ['subfigures', selectedFigureId, selectedSubfigureId],
+    async () => {
+      const subfigures = await fetchSubfigures(selFigQuery.data._id)
+      let selected = null
+      if (selectedSubfigureId) {
+        selected = subfigures.find(f => f._id === selectedSubfigureId)
+      } else if (!selected || !selectedSubfigureId) {
+        selected = subfigures[0]
+      }
+      return {
+        subfigures,
+        selected,
+      }
+    },
     {
       enabled: !!selFigQuery?.data && !!selectedFigureId,
       onSuccess: data => {
         if (!selectedSubfigureId) {
-          setSelectedSubfigureId(data[0]._id)
+          setSelectedSubfigureId(data.subfigures[0]._id)
         }
       },
     },
   )
 
-  const selSubfigQuery = useQuery(
-    ['subfigure', selectedSubfigureId],
-    () => {
-      console.log('recalling the subfigure selected')
-      console.log(subfigQuery.data)
-      if (selectedSubfigureId) {
-        let subfigure = subfigQuery.data.find(
-          f => f._id === selectedSubfigureId,
-        )
-        subfigure = subfigure ? subfigure : subfigQuery.data[0]
-        return subfigure
-      } else {
-        return subfigQuery.data[0]
-      }
-    },
-    {
-      enabled: !!subfigQuery?.data && !!setSelectedSubfigureId,
-    },
-  )
-
+  // TODO: label comes from task
   const modalitiesQuery = useQuery(['modalities'], () =>
     fetchModalities('curation'),
   )
@@ -119,29 +118,24 @@ const LabelPage = () => {
 
   const subfigureMutation = useMutation(values => updateSubfigure(values), {
     onSuccess: async (data, variables) => {
-      console.log('mutation')
-      console.log(data)
-      console.log(variables)
-      console.log(selectedSubfigureId, typeof selectedSubfigureId)
-      // setSelectedSubfigureId(data._id)
-      // queryClient.setQueryData(['subfigure', data._id], data)
-      const f = await queryClient.invalidateQueries([
+      queryClient.invalidateQueries([
         'subfigures',
         selectedFigureId,
+        selectedSubfigureId,
       ])
-      console.log('f', f)
-      queryClient.invalidateQueries(['subfigure', data._id])
     },
   })
 
+  // update status to started for assigned tasks, triggers only
+  // the first time a task is opened
   useEffect(() => {
     // TODO: how to avoid useMutation from the dependency array
-    if (taskQuery.data) {
-      if (taskQuery.data.status === TASK_ASSIGNED) {
-        startMutation.mutate({_id: taskQuery.data._id})
+    if (task.data) {
+      if (task.data.status === TASK_ASSIGNED) {
+        startMutation.mutate({_id: task.data._id})
       }
     }
-  }, [taskQuery.data])
+  }, [task.data])
 
   return (
     <div>
@@ -154,14 +148,14 @@ const LabelPage = () => {
       >
         {/* task and document info header */}
         <GridItem rowSpan={1} colSpan={5}>
-          {docQuery.isLoading || taskQuery.isLoading ? (
+          {document.isLoading || task.isLoading ? (
             'Loading document and task data ...'
-          ) : docQuery.isLoading || taskQuery.isLoading ? (
+          ) : document.isLoading || task.isLoading ? (
             'Error loading data ...'
           ) : (
             <LabelHeader
-              task={taskQuery.data}
-              document={docQuery.data}
+              task={task.data}
+              document={document.data}
               onFinishClick={task =>
                 finishMutation.mutate({
                   _id: task._id,
@@ -171,9 +165,12 @@ const LabelPage = () => {
             />
           )}
         </GridItem>
+
         {/* figures list on the left */}
         <GridItem rowSpan={2} colSpan={1}>
-          {figsQuery.isLoading || selFigQuery.isLoading ? (
+          {figsQuery.isLoading ||
+          selFigQuery.isLoading ||
+          subfigQuery.isLoading ? (
             'Loading images ...'
           ) : figsQuery.isError || selFigQuery.isError ? (
             'error loading images ...'
@@ -184,68 +181,57 @@ const LabelPage = () => {
                 selectedId={selFigQuery.data._id}
                 onClick={id => {
                   setSelectedFigureId(id)
-                  queryClient.invalidateQueries([
-                    'selected_figure',
-                    selectedFigureId,
-                  ])
                   setSelectedSubfigureId(null)
-                  queryClient.invalidateQueries([
-                    'subfigures',
-                    selectedFigureId,
-                  ])
+                  queryClient.invalidateQueries(['subfigures', id, null])
                 }}
               />
             </>
           )}
         </GridItem>
+
         {/* selected figure preview and captions */}
         <GridItem rowSpan={2} colSpan={1}>
           {figsQuery.isLoading ||
           selFigQuery.isLoading ||
-          subfigQuery.isLoading ||
-          selSubfigQuery.isLoading ? (
+          subfigQuery.isLoading ? (
             'Loading images ...'
           ) : figsQuery.isError ||
             selFigQuery.isError ||
-            subfigQuery.isError ||
-            selSubfigQuery.isLoading ? (
+            subfigQuery.isError ? (
             'error loading images ...'
           ) : (
             <>
               <SelectedFigure
                 figure={selFigQuery.data}
-                subfigures={subfigQuery.data}
+                subfigures={subfigQuery.data.subfigures}
                 onClick={id => {
                   setSelectedSubfigureId(id)
                   queryClient.invalidateQueries(['selected_subfigure', id])
                 }}
-                selectedSubfigureId={selSubfigQuery.data._id}
+                selectedSubfigureId={subfigQuery.data.selected._id}
               />
             </>
           )}
         </GridItem>
+
+        {/* labeling area to the right */}
         <GridItem>
           {modalitiesQuery.isLoading ||
-          selSubfigQuery.isLoading ||
           figsQuery.isLoading ||
           selFigQuery.isLoading ||
           subfigQuery.isLoading ? (
             'Loading modalities...'
-          ) : modalitiesQuery.isError || selSubfigQuery.isError ? (
+          ) : modalitiesQuery.isError ? (
             'Error modalities...'
           ) : (
             <Box>
-              <Subfigure subfigure={selSubfigQuery.data} />
+              <Subfigure subfigure={subfigQuery.data.selected} />
               <Labeling
-                subfigure={selSubfigQuery.data}
+                subfigure={subfigQuery.data.selected}
                 modalities={modalitiesQuery.data}
                 onClick={(id, values) => {
                   const {modalities} = values
-
-                  subfigureMutation.mutate({
-                    _id: id,
-                    modalities: modalities,
-                  })
+                  subfigureMutation.mutate({_id: id, modalities})
                 }}
               />
             </Box>
