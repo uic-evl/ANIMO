@@ -1,7 +1,5 @@
 import {setupWorker, rest} from 'msw'
 import {db} from './db'
-// cannot import recursive relationships with mswjs/data
-// import modalities from './data/modalities.json'
 import * as constants from '../utils/constants'
 
 const modalities = require('./data/modalities.json')
@@ -200,14 +198,30 @@ const fetchModalities = (req, res, ctx) => {
 
 const updateFigure = (req, res, ctx) => {
   const {id} = req.params
-  const {modalities} = req.body
+  const {modalities, composition, applyToAll} = req.body
 
-  const data = {state: constants.FIGURE_REVIEWED}
+  const data = {
+    ...req.body,
+    state: constants.FIGURE_REVIEWED,
+    composition: composition ? composition : '',
+  }
   if (modalities) {
     data.modalities = modalities.join()
   }
 
-  const results = db.figure.update({where: {_id: {equals: id}}, data})
+  const updatedFigure = db.figure.update({where: {_id: {equals: id}}, data})
+
+  let results = null
+  if (applyToAll) {
+    const data = {
+      modalities: modalities.join(),
+      state: constants.FIGURE_REVIEWED,
+    }
+    results = db.figure.updateMany({
+      where: {figureId: {equals: updatedFigure.figureId}},
+      data,
+    })
+  }
 
   if (results) {
     return res(ctx.status(200), ctx.json({results}))

@@ -21,7 +21,8 @@ import {TASK_ASSIGNED} from '../utils/constants'
 
 const HARDCODED_USERNAME = 'jtrell2'
 
-const checkParamId = id => (id === '0' || id === undefined ? null : id)
+const checkParamId = id =>
+  id === '0' || id === undefined || id === 'undefined' ? null : id
 
 const LabelPage = () => {
   // always receive taskid and docid, others are optional (0 is null)
@@ -72,6 +73,8 @@ const LabelPage = () => {
   const subfigQuery = useQuery(
     ['subfigures', selfigId, selsubfigId],
     async () => {
+      console.log('subqueries', selfigId)
+      console.log('subfig id', selsubfigId)
       const subfigures = await fetchSubfigures(selFigQuery.data._id)
       let selected = null
       if (selsubfigId) {
@@ -85,7 +88,7 @@ const LabelPage = () => {
       }
     },
     {
-      enabled: !!selFigQuery?.data && !!selfigId,
+      enabled: selfigId !== null && !!selFigQuery?.data,
       onSuccess: data => {
         if (!selsubfigId) {
           setSelSubfigId(data.subfigures[0]._id)
@@ -164,7 +167,9 @@ const LabelPage = () => {
           selFigQuery.isLoading ||
           subfigQuery.isLoading ? (
             'Loading images ...'
-          ) : figsQuery.isError || selFigQuery.isError ? (
+          ) : figsQuery.isError ||
+            selFigQuery.isError ||
+            subfigQuery.isError ? (
             'error loading images ...'
           ) : (
             <>
@@ -222,8 +227,7 @@ const LabelPage = () => {
                 subfigure={subfigQuery.data.selected}
                 modalities={modalitiesQuery.data}
                 onClick={(id, values) => {
-                  const {modalities} = values
-                  subfigureMutation.mutate({_id: id, modalities})
+                  subfigureMutation.mutate({...values, _id: id})
                 }}
               />
             </Box>

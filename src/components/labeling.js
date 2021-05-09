@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {
   Box,
   Flex,
@@ -8,7 +8,6 @@ import {
   Checkbox,
   Text,
   chakra,
-  Select,
   FormControl,
   FormLabel,
   NumberInput,
@@ -19,23 +18,62 @@ import {
   RadioGroup,
   HStack,
   Radio,
-  Input,
   Textarea,
 } from '@chakra-ui/react'
 import Matrix from '../components/modalities-matrix'
 import Subfigure from '../components/subfigure'
+import {FIGURE_SKIPPED} from '../utils/constants'
 
 const Labeling = ({subfigure, modalities, caption, onClick}) => {
-  const [selectedModalityIds, setSelectedModalityIds] = useState(() =>
-    subfigure.modalities ? subfigure.modalities : [],
-  )
+  const [selectedModalityIds, setSelectedModalityIds] = useState([])
+  const [isCloseUp, setIsCloseUp] = useState(false)
+  const [needsCropping, setNeedsCropping] = useState(false)
+  const [isOvercropped, setIsOvercropped] = useState(false)
+  const [isOverfragmented, setIsOverfragmented] = useState(false)
+  const [isCompound, setIsCompound] = useState(false)
+  const [isMissingSubfigures, setIsMissingSubfigures] = useState(false)
+  const [numberSubpanes, setNumberSubpanes] = useState(1)
+  const [isMultipane, setIsMultipane] = useState(false)
+  const [observations, setObservations] = useState('')
+  const [composition, setComposition] = useState(null)
+  const [applyToAll, setApplyToAll] = useState(false)
 
   const handleOnSaveClick = () => {
     const values = {
       modalities: selectedModalityIds,
+      closeUp: isCloseUp,
+      needsCropping: needsCropping,
+      isOvercropped: isOvercropped,
+      isOverfragmented: isOverfragmented,
+      isCompound: isCompound,
+      isMissingSubfigures: isMissingSubfigures,
+      numberSubpanes: numberSubpanes,
+      observations: observations,
+      composition: !isMultipane ? null : composition,
+      applyToAll: applyToAll,
     }
     onClick(subfigure._id, values)
   }
+
+  const handleOnSkipClick = () => {
+    onClick(subfigure._id, {state: FIGURE_SKIPPED})
+  }
+
+  useEffect(() => {
+    setIsCloseUp(subfigure.closeUp)
+    setNeedsCropping(subfigure.needsCropping)
+    setIsOvercropped(subfigure.isOvercropped)
+    setIsOverfragmented(subfigure.isOverfragmented)
+    setIsCompound(subfigure.isCompound)
+    setIsMissingSubfigures(subfigure.isMissingSubfigures)
+    setIsMultipane(subfigure.composition ? true : false)
+    setObservations(subfigure.observations)
+    setComposition(subfigure.composition)
+    setNumberSubpanes(
+      subfigure.numberSubpanes === 0 ? 1 : subfigure.numberSubpanes,
+    )
+    setSelectedModalityIds(subfigure.modalities ? subfigure.modalities : [])
+  }, [subfigure])
 
   return (
     <Flex width="100%" h="90vh" pt="2" direction="column">
@@ -73,15 +111,45 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
         <Box>
           <Flex direction="row">
             <Stack direction="column" pt="1.5">
-              <Checkbox>Close-up image</Checkbox>
-              <Checkbox>Should be further cropped</Checkbox>
-              <Checkbox>Over-cropped</Checkbox>
-              <Checkbox>Over-fragmented</Checkbox>
-              <Checkbox>Missing subfigures</Checkbox>
+              <Checkbox
+                isChecked={isCloseUp}
+                onChange={e => setIsCloseUp(e.target.checked)}
+              >
+                Close-up image
+              </Checkbox>
+              <Checkbox
+                isChecked={needsCropping}
+                onChange={e => setNeedsCropping(e.target.checked)}
+              >
+                Should be further cropped
+              </Checkbox>
+              <Checkbox
+                isChecked={isOvercropped}
+                onChange={e => setIsOvercropped(e.target.checked)}
+              >
+                Over-cropped
+              </Checkbox>
+              <Checkbox
+                isChecked={isOverfragmented}
+                onChange={e => setIsOverfragmented(e.target.checked)}
+              >
+                Over-fragmented
+              </Checkbox>
+              <Checkbox
+                isChecked={isMissingSubfigures}
+                onChange={e => setIsMissingSubfigures(e.target.checked)}
+              >
+                Missing subfigures
+              </Checkbox>
             </Stack>
             <Spacer />
             <Stack pt="1.5">
-              <Checkbox>Compound figure - should be further separated</Checkbox>
+              <Checkbox
+                isChecked={isCompound}
+                onChange={e => setIsCompound(e.target.checked)}
+              >
+                Compound figure - should be further separated
+              </Checkbox>
               <Box pl="6">
                 <FormControl id="amount">
                   <Flex direction="row">
@@ -90,7 +158,14 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                         Number Subpanes
                       </chakra.span>
                     </FormLabel>
-                    <NumberInput max={30} min={1} size="sm" w="100px">
+                    <NumberInput
+                      max={30}
+                      min={1}
+                      size="sm"
+                      w="100px"
+                      value={numberSubpanes}
+                      onChange={value => setNumberSubpanes(value)}
+                    >
                       <NumberInputField />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -99,12 +174,24 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                     </NumberInput>
                   </Flex>
                 </FormControl>
-                <Checkbox>Multipane figure</Checkbox>
+                <Checkbox
+                  isChecked={isMultipane}
+                  onChange={e => setIsMultipane(e.target.checked)}
+                >
+                  Multipane figure
+                </Checkbox>
                 <FormControl pt="1.5">
-                  <RadioGroup defaultValue="Heterogeneous">
+                  <RadioGroup
+                    value={composition}
+                    onChange={value => setComposition(value)}
+                  >
                     <HStack spacing="24px">
-                      <Radio value="Heterogeneous">Heterogeneous</Radio>
-                      <Radio value="Homogeneous">Homogeneous</Radio>
+                      <Radio value="heterogeneous" isDisabled={!isMultipane}>
+                        Heterogeneous
+                      </Radio>
+                      <Radio value="homogeneous" isDisabled={!isMultipane}>
+                        Homogeneous
+                      </Radio>
                     </HStack>
                   </RadioGroup>
                 </FormControl>
@@ -112,7 +199,10 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
             </Stack>
             <FormControl id="comments" w="200px" pt="1.5" pl="1.5">
               <FormLabel>Comments</FormLabel>
-              <Textarea />
+              <Textarea
+                value={observations}
+                onChange={e => setObservations(e.target.value)}
+              />
             </FormControl>
           </Flex>
         </Box>
@@ -120,11 +210,21 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
 
       <Flex pt="2" bg="teal.400" p="2">
         <Spacer />
-        <Checkbox>Apply labels to all subfigures</Checkbox>
-        <Button onClick={handleOnSaveClick} ml="2.5">
+        <Checkbox
+          checked={applyToAll}
+          onChange={e => setApplyToAll(e.target.checked)}
+        >
+          Apply labels to all subfigures
+        </Checkbox>
+        <Button onClick={handleOnSkipClick} ml="2.5">
           Skip
         </Button>
-        <Button onClick={handleOnSaveClick} ml="1.5" mr="1.5">
+        <Button
+          onClick={handleOnSaveClick}
+          ml="1.5"
+          mr="1.5"
+          isDisabled={selectedModalityIds.length === 0}
+        >
           Save
         </Button>
       </Flex>
