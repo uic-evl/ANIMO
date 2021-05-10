@@ -76,7 +76,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
   }, [subfigure])
 
   return (
-    <Flex width="100%" h="90vh" pt="2" direction="column">
+    <Flex width="100%" h="85vh" pt="2" direction="column">
       <Flex direction="row">
         <Box w="250px">
           <chakra.span fontStyle="italic" pl="1.5">

@@ -34,7 +34,7 @@ const InboxPage = () => {
 
   const handleRowClick = values => {
     const {_id, documentId} = values
-    history.push(`/label/${_id}/${documentId}/undefined/undefined`)
+    history.push(`/label/${_id}/${documentId}/0/0`)
   }
 
   if (isLoading) {

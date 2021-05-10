@@ -1,4 +1,4 @@
-import {Box, Image, chakra, Flex} from '@chakra-ui/react'
+import {Image, Flex} from '@chakra-ui/react'
 
 const Subfigure = ({subfigure}) => {
   return (

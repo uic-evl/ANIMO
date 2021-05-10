@@ -162,7 +162,9 @@ const fetchSubfigures = (req, res, ctx) => {
 const fetchModalities = (req, res, ctx) => {
   const {name} = req.params
 
-  const tree = modalities.find(m => m.name === name)
+  // clone JSON reference to avoid mutating in memory
+  const options = JSON.parse(JSON.stringify(modalities))
+  const tree = options.find(m => m.name === name)
   if (tree) {
     const rows = []
     let fringe = tree.modalities

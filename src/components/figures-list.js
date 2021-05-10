@@ -8,7 +8,7 @@ const DocumentFigures = ({figures, selectedId, onClick}) => {
   }
 
   return (
-    <Box backgroundColor={'gray.400'}>
+    <Box backgroundColor={'gray.400'} height="100%">
       <Text pt="10px" pb="5px" fontSize="20px" align="center">
         Figures
       </Text>

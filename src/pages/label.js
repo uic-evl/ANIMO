@@ -69,7 +69,7 @@ const LabelPage = () => {
       }
     },
     {
-      enabled: !!figsQuery?.data && !!selfigId,
+      enabled: selfigId !== null && !!figsQuery?.data,
     },
   )
 
@@ -141,9 +141,9 @@ const LabelPage = () => {
   return (
     <div>
       <Grid
-        h="95vh"
+        h="92vh"
         w="100%"
-        templateRows="50px 1fr 1fr"
+        templateRows="34px 1fr 1fr"
         templateColumns="150px 300px 1fr"
         gap={0}
       >
@@ -169,7 +169,7 @@ const LabelPage = () => {
         </GridItem>
 
         {/* figures list on the left */}
-        <GridItem rowSpan={2} colSpan={1}>
+        <GridItem rowSpan={2} colSpan={1} backgroundColor={'gray.400'}>
           {figsQuery.isLoading ||
           selFigQuery.isLoading ||
           subfigQuery.isLoading ? (
@@ -182,7 +182,7 @@ const LabelPage = () => {
             <>
               <DocumentFigures
                 figures={figsQuery.data}
-                selectedId={selFigQuery.data._id}
+                selectedId={selFigQuery.data?._id}
                 onClick={id => {
                   setSelFigId(id)
                   setSelSubfigId(null)
@@ -193,11 +193,12 @@ const LabelPage = () => {
           )}
         </GridItem>
 
-        {/* selected figure preview and captions */}
+        {/* selected figure preview and captions, data needs to be added to dependent queries as isSuccess does not assure the data is there */}
         <GridItem rowSpan={2} colSpan={1}>
           {figsQuery.isLoading ||
           selFigQuery.isLoading ||
-          subfigQuery.isLoading ? (
+          subfigQuery.isLoading ||
+          !subfigQuery.data ? (
             'Loading images ...'
           ) : figsQuery.isError ||
             selFigQuery.isError ||
@@ -223,15 +224,16 @@ const LabelPage = () => {
           {modalitiesQuery.isLoading ||
           figsQuery.isLoading ||
           selFigQuery.isLoading ||
-          subfigQuery.isLoading ? (
+          subfigQuery.isLoading ||
+          !selFigQuery.data ? (
             'Loading modalities...'
           ) : modalitiesQuery.isError ? (
             'Error modalities...'
           ) : (
             <Box>
               <Labeling
-                caption={selFigQuery.data.caption}
-                subfigure={subfigQuery.data.selected}
+                caption={selFigQuery.data?.caption}
+                subfigure={subfigQuery.data?.selected}
                 modalities={modalitiesQuery.data}
                 onClick={(id, values) => {
                   subfigureMutation.mutate({...values, _id: id})

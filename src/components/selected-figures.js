@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  Text,
-  Box,
-  Stack,
-  chakra,
-  Image,
-  Flex,
-  Badge,
-  Spacer,
-} from '@chakra-ui/react'
+import {Text, Box, Stack, chakra, Image, Flex, Spacer} from '@chakra-ui/react'
 import {StateBadge} from './figure-card'
 
 const SelectedFigure = ({figure, subfigures, onClick, selectedSubfigureId}) => {
