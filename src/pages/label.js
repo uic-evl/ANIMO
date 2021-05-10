@@ -15,9 +15,8 @@ import {Box, Grid, GridItem} from '@chakra-ui/react'
 import LabelHeader from '../components/label-header'
 import DocumentFigures from '../components/figures-list'
 import SelectedFigure from '../components/selected-figures'
-import Subfigure from '../components/subfigure'
 import Labeling from '../components/labeling'
-import {TASK_ASSIGNED} from '../utils/constants'
+import {TASK_ASSIGNED, FIGURE_TO_REVIEW} from '../utils/constants'
 
 const HARDCODED_USERNAME = 'jtrell2'
 
@@ -32,6 +31,7 @@ const LabelPage = () => {
   // when no optionals, default to null and let the hooks populate the id
   const [selfigId, setSelFigId] = useState(checkParamId(figureId))
   const [selsubfigId, setSelSubfigId] = useState(checkParamId(subfigureId))
+  const [finishEnabled, setFinishEnabled] = useState(false)
 
   const queryClient = useQueryClient()
   const history = useHistory()
@@ -43,12 +43,16 @@ const LabelPage = () => {
   )
 
   const figsQuery = useQuery(
-    ['figures'],
+    ['figures', documentId],
     async () => fetchDocumentFigures(documentId),
     {
       onSuccess: data => {
         if (!selfigId) {
           setSelFigId(data[0]._id)
+        }
+        const figuresToReview = data.filter(f => f.state === FIGURE_TO_REVIEW)
+        if (figuresToReview.length === 0) {
+          setFinishEnabled(true)
         }
       },
     },
@@ -73,8 +77,6 @@ const LabelPage = () => {
   const subfigQuery = useQuery(
     ['subfigures', selfigId, selsubfigId],
     async () => {
-      console.log('subqueries', selfigId)
-      console.log('subfig id', selsubfigId)
       const subfigures = await fetchSubfigures(selFigQuery.data._id)
       let selected = null
       if (selsubfigId) {
@@ -116,7 +118,11 @@ const LabelPage = () => {
   })
 
   const subfigureMutation = useMutation(values => updateSubfigure(values), {
-    onSuccess: async (data, variables) => {
+    onSuccess: async (data, _) => {
+      if (data.refreshFigure) {
+        queryClient.invalidateQueries(['figures', documentId])
+        queryClient.invalidateQueries(['figure', selfigId])
+      }
       queryClient.invalidateQueries(['subfigures', selfigId, selsubfigId])
     },
   })
@@ -145,7 +151,7 @@ const LabelPage = () => {
         <GridItem rowSpan={1} colSpan={5}>
           {document.isLoading || task.isLoading ? (
             'Loading document and task data ...'
-          ) : document.isLoading || task.isLoading ? (
+          ) : document.isError || task.isError ? (
             'Error loading data ...'
           ) : (
             <LabelHeader
@@ -157,6 +163,7 @@ const LabelPage = () => {
                   username: HARDCODED_USERNAME,
                 })
               }
+              finishEnabled={finishEnabled}
             />
           )}
         </GridItem>

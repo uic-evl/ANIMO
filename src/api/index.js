@@ -1,3 +1,4 @@
+import {client} from '../utils/apiClient'
 import axios from 'axios'
 
 export const fetchTasks = async () => {
@@ -55,5 +56,14 @@ export const updateSubfigure = async values => {
   const {_id} = values
   return axios
     .patch(`http://localhost:3000/api/figures/${_id}`, values)
-    .then(res => res.data.results)
+    .then(res => res.data)
+}
+
+export const me = async token => {
+  const data = await client(`me/${token}`, 'get', {token: token})
+  if (data) {
+    return {user: {...data.user, token: data.token}}
+  } else {
+    return data
+  }
 }

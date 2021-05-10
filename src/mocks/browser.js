@@ -87,7 +87,6 @@ const finishTask = async (req, res, ctx) => {
 
 const fetchDocumentById = (req, res, ctx) => {
   const {id} = req.params
-  console.log('document', id)
 
   const document = db.document.findFirst({where: {_id: {equals: id}}})
   if (document) {
@@ -109,7 +108,6 @@ const fetchDocumentById = (req, res, ctx) => {
 
 const fetchDocumentFigures = (req, res, ctx) => {
   const {id} = req.params
-  console.log('fetch figures for', id)
 
   const figures = db.figure.findMany({
     where: {docId: {equals: id}, type: {equals: constants.FIGURE}},
@@ -211,20 +209,40 @@ const updateFigure = (req, res, ctx) => {
 
   const updatedFigure = db.figure.update({where: {_id: {equals: id}}, data})
 
-  let results = null
   if (applyToAll) {
     const data = {
       modalities: modalities.join(),
       state: constants.FIGURE_REVIEWED,
     }
-    results = db.figure.updateMany({
+    db.figure.updateMany({
       where: {figureId: {equals: updatedFigure.figureId}},
       data,
     })
   }
 
-  if (results) {
-    return res(ctx.status(200), ctx.json({results}))
+  let imagesToReview = db.figure.findMany({
+    where: {
+      figureId: {equals: updatedFigure.figureId},
+    },
+  })
+  imagesToReview = imagesToReview.filter(
+    f => f.state === constants.FIGURE_TO_REVIEW,
+  )
+
+  // check if need to update parent figure if every image was reviewed
+  const refreshFigure = imagesToReview.length === 0
+  if (refreshFigure) {
+    db.figure.update({
+      where: {_id: {equals: updatedFigure.figureId}},
+      data: {state: constants.FIGURE_REVIEWED},
+    })
+  }
+
+  if (updatedFigure) {
+    return res(
+      ctx.status(200),
+      ctx.json({results: updatedFigure, refreshFigure}),
+    )
   } else {
     return res(
       ctx.status(403),
@@ -232,6 +250,57 @@ const updateFigure = (req, res, ctx) => {
         errorMessage: `Error updating subfigure`,
       }),
     )
+  }
+}
+
+const login = (req, res, ctx) => {
+  const {username, password} = req.body
+
+  const user = db.user.findFirst({where: {username: {equals: username}}})
+  if (!user) {
+    return res(ctx.status(400), ctx.json({message: 'authentication error'}))
+  }
+  const authenticated = user.password === password
+
+  // for mockup, use username also as the token
+  if (authenticated) {
+    return res(ctx.status(200), ctx.json({user: user, token: user.username}))
+  } else {
+    return res(
+      ctx.status(400),
+      ctx.json({user: null, message: 'authentication error'}),
+    )
+  }
+}
+
+const me = async (req, res, ctx) => {
+  const user = await getUser(req)
+  if (!user) {
+    res(ctx.status(401), ctx.json({message: 'Please re-authenticate.'}))
+  }
+
+  const token = await getToken(req)
+  return res(ctx.status(200), ctx.json({user, token}))
+}
+
+const user = (req, res, ctx) => {}
+
+// for mockup, the token is the same as the username, so we can get the user
+// info by getting rid of the Bearer part of the header
+const getToken = req => req.headers.get('Authorization').replace('Bearer ', '')
+
+async function getUser(req) {
+  const token = getToken(req)
+  if (!token) {
+    return null
+  }
+  const username = token
+  const user = db.user.findFirst({where: {username: {equals: username}}})
+
+  if (user) {
+    return user
+  } else {
+    return null
   }
 }
 
@@ -245,4 +314,7 @@ export const worker = setupWorker(
   rest.get('/api/figures/:id/subfigures', fetchSubfigures),
   rest.get('/api/modalities/:name', fetchModalities),
   rest.patch('/api/figures/:id', updateFigure),
+  rest.post('/api/login', login),
+  rest.get('/api/me/:token', me),
+  rest.get('/api/user', user),
 )

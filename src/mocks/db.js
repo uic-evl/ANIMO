@@ -2,6 +2,7 @@ import {factory, primaryKey} from '@mswjs/data'
 import tasksData from './data/tasks.json'
 import documentData from './data/documents.json'
 import figureData from './data/figures.json'
+import userData from './data/users.json'
 
 export const db = factory({
   task: {
@@ -47,22 +48,18 @@ export const db = factory({
     composition: () => '',
     modalities: () => '',
   },
-
-  // modalityNode: {
-  //   _id: primaryKey(String),
-  //   name: () => '',
-  //   shortname: () => '',
-  //   isRow: false,
-  //   children: manyOf('modalityNode'),
-  // },
-  // modality: {
-  //   _id: primaryKey(String),
-  //   name: () => '',
-  //   modalities: manyOf('modalityNode'),
-  // },
+  user: {
+    _id: primaryKey(String),
+    email: () => '',
+    username: () => '',
+    password: () => '',
+    status: () => '',
+    organization: () => '',
+  },
 })
 
 tasksData.forEach(task => db.task.create(task))
 documentData.forEach(document => db.document.create(document))
 figureData.forEach(figure => db.figure.create(figure))
+userData.forEach(user => db.user.create(user))
 //modalityData.forEach(modality => db.modality.create(modality))
