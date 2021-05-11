@@ -4,19 +4,25 @@ import * as constants from '../utils/constants'
 
 const modalities = require('./data/modalities.json')
 
-const fetchTasks = (_, res, ctx) => {
+const fetchTasks = (req, res, ctx) => {
+  const username = req.url.searchParams.get('username')
+  let tasks = db.task.getAll()
+  // convert assignedTo from string to array (mswjs limitation)
+  tasks = tasks.map(t => ({...t, assignedTo: t.assignedTo.split(',')}))
+  tasks = tasks.filter(t => t.assignedTo.includes(username))
+
   return res(
     ctx.status(200),
     ctx.json({
-      results: db.task.getAll(),
+      results: tasks,
     }),
   )
 }
 
 const fetchTaskById = (req, res, ctx) => {
   const {id} = req.params
-
   const task = db.task.findFirst({where: {_id: {equals: id}}})
+
   if (task) {
     return res(
       ctx.status(200),

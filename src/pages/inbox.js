@@ -6,8 +6,10 @@ import {Heading, Box} from '@chakra-ui/react'
 import {fetchTasks} from '../api/index'
 import {dateAccessor} from '../utils/format'
 
-const InboxPage = () => {
-  const {isLoading, isError, data, error} = useQuery('tasks', fetchTasks)
+const InboxPage = ({username}) => {
+  const {isLoading, isError, data, error} = useQuery('tasks', () =>
+    fetchTasks(username),
+  )
   const history = useHistory()
 
   const tableColumns = useMemo(

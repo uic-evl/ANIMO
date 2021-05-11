@@ -1,9 +1,9 @@
 import {client} from '../utils/apiClient'
 import axios from 'axios'
 
-export const fetchTasks = async () => {
+export const fetchTasks = async username => {
   return axios
-    .get('http://localhost:3000/api/tasks')
+    .get(`http://localhost:3000/api/tasks`, {params: {username}})
     .then(res => res.data.results)
 }
 

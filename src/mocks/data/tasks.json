@@ -2,9 +2,9 @@
   {
     "_id": "1",
     "description": "15350224",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "ASSIGNED",
     "creationDate": "2019-11-19T16:08:38.834Z",
@@ -12,14 +12,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "1"
+    "document_id": "1",
+    "taxonomy": "curation"
   },
   {
     "_id": "2",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "ASSIGNED",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -27,14 +28,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "3",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "ASSIGNED",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -42,14 +44,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "4",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "IN PROCESS",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -57,14 +60,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "5",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "IN PROCESS",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -72,14 +76,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "6",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "To Review",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -87,14 +92,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "7",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "To Review",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -102,14 +108,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "8",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "To Review",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -117,14 +124,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "9",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "To Review",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -132,14 +140,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "10",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "To Review",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -147,14 +156,15 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   },
   {
     "_id": "11",
     "description": "15350225",
-    "assignedTo": ["jtrell2"],
+    "assignedTo": "user1",
     "taskPerformer": null,
-    "username": "jtrell2",
+    "username": "user1",
     "user_id": "1",
     "status": "To Review",
     "creationDate": "2019-12-19T16:08:38.834Z",
@@ -162,6 +172,7 @@
     "endDate": null,
     "type": "Label",
     "url": "/label/5dfba083f5d15939fd4cade0",
-    "document_id": "2"
+    "document_id": "2",
+    "taxonomy": "curation"
   }
 ]

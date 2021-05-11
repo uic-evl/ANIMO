@@ -18,12 +18,10 @@ import SelectedFigure from '../components/selected-figures'
 import Labeling from '../components/labeling'
 import {TASK_ASSIGNED, FIGURE_TO_REVIEW} from '../utils/constants'
 
-const HARDCODED_USERNAME = 'jtrell2'
-
 const checkParamId = id =>
   id === '0' || id === undefined || id === 'undefined' ? null : id
 
-const LabelPage = () => {
+const LabelPage = ({username}) => {
   // always receive taskid and docid, others are optional (0 is null)
   const {taskId, documentId} = useParams()
   let {figureId, subfigureId} = useParams()
@@ -99,9 +97,12 @@ const LabelPage = () => {
     },
   )
 
-  // TODO: label comes from task
-  const modalitiesQuery = useQuery(['modalities'], () =>
-    fetchModalities('curation'),
+  const modalitiesQuery = useQuery(
+    ['modalities'],
+    () => fetchModalities(task.data.taxonomy),
+    {
+      enabled: task.isSuccess && !!task?.data,
+    },
   )
 
   const startMutation = useMutation(values => startTask(values), {
@@ -160,7 +161,7 @@ const LabelPage = () => {
               onFinishClick={task =>
                 finishMutation.mutate({
                   _id: task._id,
-                  username: HARDCODED_USERNAME,
+                  username: username,
                 })
               }
               finishEnabled={finishEnabled}

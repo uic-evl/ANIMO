@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_ENDPOINT = 'http://localhost:3000/api'
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT
 
 async function client(endpoint, method, {data, token} = {}) {
   const headers = {
@@ -9,6 +9,7 @@ async function client(endpoint, method, {data, token} = {}) {
   }
 
   try {
+    console.log(`${API_ENDPOINT}/${endpoint}`)
     const response = await axios({
       method,
       url: `${API_ENDPOINT}/${endpoint}`,

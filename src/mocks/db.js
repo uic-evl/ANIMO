@@ -18,6 +18,7 @@ export const db = factory({
     endDate: () => new Date(null),
     type: () => 'Label',
     documentId: () => '1',
+    taxonomy: () => '',
   },
   document: {
     _id: primaryKey(String),

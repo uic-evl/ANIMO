@@ -1,6 +1,6 @@
 import {client} from './apiClient'
 
-const localStorageKey = '__curation_auth_provider_token__'
+const localStorageKey = process.env.REACT_APP_AUTH_KEY
 
 export const getToken = () => {
   return localStorage.getItem(localStorageKey)
