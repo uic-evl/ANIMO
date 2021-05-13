@@ -11,12 +11,7 @@ const fetchTasks = (req, res, ctx) => {
   tasks = tasks.map(t => ({...t, assignedTo: t.assignedTo.split(',')}))
   tasks = tasks.filter(t => t.assignedTo.includes(username))
 
-  return res(
-    ctx.status(200),
-    ctx.json({
-      results: tasks,
-    }),
-  )
+  return res(ctx.status(200), ctx.json(tasks))
 }
 
 const fetchTaskById = (req, res, ctx) => {
@@ -24,19 +19,9 @@ const fetchTaskById = (req, res, ctx) => {
   const task = db.task.findFirst({where: {_id: {equals: id}}})
 
   if (task) {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: task,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(task))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Task not found`,
-      }),
-    )
+    return res(ctx.status(400), ctx.json({message: `Task not found`}))
   }
 }
 
@@ -49,19 +34,9 @@ const startTask = async (req, res, ctx) => {
   })
 
   if (updatedTask) {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: updatedTask,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(updatedTask))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Task not found`,
-      }),
-    )
+    return res(ctx.status(400), ctx.json({message: `Task not found`}))
   }
 }
 
@@ -71,23 +46,17 @@ const finishTask = async (req, res, ctx) => {
 
   const updatedTask = db.task.update({
     where: {_id: {equals: id}},
-    data: {status: 'Finished', endDate: new Date(), taskPerformer: username},
+    data: {
+      status: constants.TASK_FINISHED,
+      endDate: new Date(),
+      taskPerformer: username,
+    },
   })
 
   if (updatedTask) {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: updatedTask,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(updatedTask))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Task not found`,
-      }),
-    )
+    return res(ctx.status(400), ctx.json({message: `Task not found`}))
   }
 }
 
@@ -96,19 +65,9 @@ const fetchDocumentById = (req, res, ctx) => {
 
   const document = db.document.findFirst({where: {_id: {equals: id}}})
   if (document) {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: document,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(document))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Document not found`,
-      }),
-    )
+    return res(ctx.status(403), ctx.json({message: `Document not found`}))
   }
 }
 
@@ -149,19 +108,9 @@ const fetchSubfigures = (req, res, ctx) => {
         sf.modalities = sf.modalities.split(',')
       }
     }
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: subfigures,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(subfigures))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Subfigures not found`,
-      }),
-    )
+    return res(ctx.status(400), ctx.json({message: `Subfigures not found`}))
   }
 }
 
@@ -186,19 +135,9 @@ const fetchModalities = (req, res, ctx) => {
       }
     }
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: rows,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(rows))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Modality tree not found`,
-      }),
-    )
+    return res(ctx.status(400), ctx.json({message: `Modality tree not found`}))
   }
 }
 
@@ -249,15 +188,10 @@ const updateFigure = (req, res, ctx) => {
   if (updatedFigure) {
     return res(
       ctx.status(200),
-      ctx.json({results: updatedFigure, refreshFigure}),
+      ctx.json({subfigure: updatedFigure, refreshFigure}),
     )
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Error updating subfigure`,
-      }),
-    )
+    return res(ctx.status(400), ctx.json({message: `Error updating subfigure`}))
   }
 }
 
@@ -272,7 +206,10 @@ const login = (req, res, ctx) => {
 
   // for mockup, use username also as the token
   if (authenticated) {
-    return res(ctx.status(200), ctx.json({user: user, token: user.username}))
+    return res(
+      ctx.status(200),
+      ctx.json({username: user.username, token: user.username}),
+    )
   } else {
     return res(
       ctx.status(400),
@@ -288,7 +225,14 @@ const me = async (req, res, ctx) => {
   }
 
   const token = await getToken(req)
-  return res(ctx.status(200), ctx.json({user, token}))
+  return res(
+    ctx.status(200),
+    ctx.json({
+      username: user.username,
+      email: user.email,
+      organization: user.organization,
+    }),
+  )
 }
 
 const user = (req, res, ctx) => {}

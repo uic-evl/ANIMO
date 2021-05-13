@@ -1,68 +1,58 @@
-import {client} from '../utils/apiClient'
-import axios from 'axios'
+import {run} from '../utils/apiClient'
 
 export const fetchTasks = async username => {
-  return axios
-    .get(`http://localhost:3000/api/tasks`, {params: {username}})
-    .then(res => res.data.results)
+  const payload = await run('tasks', 'get', {params: {username}})
+  return payload
 }
 
 export const fetchTaskById = async id => {
-  return axios
-    .get(`http://localhost:3000/api/tasks/${id}`)
-    .then(res => res.data.results)
+  const payload = await run(`tasks/${id}`, 'get')
+  return payload
 }
 
 export const fetchDocumentById = async id => {
-  return axios
-    .get(`http://localhost:3000/api/documents/${id}`)
-    .then(res => res.data.results)
+  const payload = await run(`documents/${id}`, 'get')
+  return payload
 }
 
 export const startTask = async values => {
   const {_id} = values
-  return axios
-    .patch(`http://localhost:3000/api/tasks/${_id}/start`)
-    .then(res => res.data.results)
+  const payload = await run(`tasks/${_id}/start`, 'patch')
+  return payload
 }
 
 export const finishTask = async values => {
   // TODO: capture here an error with username?
   const {_id, username} = values
-  return axios
-    .patch(`http://localhost:3000/api/tasks/${_id}/finish`, {username})
-    .then(res => res.data.results)
+  const payload = await run(`tasks/${_id}/finish`, 'patch', {data: {username}})
+  return payload
 }
 
 export const fetchDocumentFigures = async id => {
-  return axios
-    .get(`http://localhost:3000/api/documents/${id}/figures`)
-    .then(res => res.data.results)
+  const payload = await run(`documents/${id}/figures`, 'get')
+  return payload
 }
 
 export const fetchSubfigures = async id => {
-  return axios
-    .get(`http://localhost:3000/api/figures/${id}/subfigures`)
-    .then(res => res.data.results)
+  const payload = await run(`figures/${id}/subfigures`, 'get')
+  return payload
 }
 
 export const fetchModalities = async name => {
-  return axios
-    .get(`http://localhost:3000/api/modalities/${name}`)
-    .then(res => res.data.results)
+  const payload = await run(`modalities/${name}`, 'get')
+  return payload
 }
 
 export const updateSubfigure = async values => {
   const {_id} = values
-  return axios
-    .patch(`http://localhost:3000/api/figures/${_id}`, values)
-    .then(res => res.data)
+  const payload = await run(`figures/${_id}`, 'patch', {data: values})
+  return payload
 }
 
 export const me = async token => {
-  const data = await client(`me/${token}`, 'get', {token: token})
+  const data = await run(`me/${token}`, 'get', {token: token})
   if (data) {
-    return {user: {...data.user, token: data.token}}
+    return {user: {username: data.username, token: data.token}}
   } else {
     return data
   }

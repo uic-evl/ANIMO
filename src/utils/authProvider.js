@@ -7,15 +7,17 @@ export const getToken = () => {
 }
 
 export const login = async (username, password) => {
-  const data = await client('login', 'post', {data: {username, password}})
-  if (data.user) {
-    localStorage.setItem(localStorageKey, data.token)
+  const {error, payload, message} = await client('login', 'post', {
+    data: {username, password},
+  })
+  if (!error) {
+    localStorage.setItem(localStorageKey, payload.token)
     return {
-      user: {...data.user, token: data.token},
-      message: `Welcome ${data.user.username}`,
+      user: {username: payload.username, token: payload.token},
+      message: `Welcome ${payload.user.username}`,
     }
   } else {
-    return {user: null, message: data.message}
+    return {user: null, message}
   }
 }
 
