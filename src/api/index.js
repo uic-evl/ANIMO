@@ -1,40 +1,51 @@
 import {run} from '../utils/apiClient'
 
-export const fetchTasks = async username => {
-  const payload = await run('tasks', 'get', {params: {username}})
+export const fetchTasks = async (user, username) => {
+  const payload = await run('tasks', 'get', {
+    params: {username},
+    token: user.token,
+  })
   return payload
 }
 
-export const fetchTaskById = async id => {
-  const payload = await run(`tasks/${id}`, 'get')
+export const fetchTaskById = async (user, id) => {
+  const payload = await run(`tasks/${id}`, 'get', {token: user.token})
   return payload
 }
 
-export const fetchDocumentById = async id => {
-  const payload = await run(`documents/${id}`, 'get')
+export const fetchDocumentById = async (user, id) => {
+  const payload = await run(`documents/${id}`, 'get', {token: user.token})
   return payload
 }
 
-export const startTask = async values => {
+export const startTask = async (user, values) => {
   const {_id} = values
-  const payload = await run(`tasks/${_id}/start`, 'patch')
+  const payload = await run(`tasks/${_id}/start`, 'patch', {token: user.token})
   return payload
 }
 
-export const finishTask = async values => {
+export const finishTask = async (user, values) => {
   // TODO: capture here an error with username?
   const {_id, username} = values
-  const payload = await run(`tasks/${_id}/finish`, 'patch', {data: {username}})
+  const payload = await run(`tasks/${_id}/finish`, 'patch', {
+    data: {username},
+    token: user.token,
+  })
   return payload
 }
 
-export const fetchDocumentFigures = async id => {
-  const payload = await run(`documents/${id}/figures`, 'get')
+export const fetchDocumentFigures = async (user, id) => {
+  const payload = await run(`documents/${id}/figures`, 'get', {
+    token: user.token,
+  })
+  console.log(payload)
   return payload
 }
 
-export const fetchSubfigures = async id => {
-  const payload = await run(`figures/${id}/subfigures`, 'get')
+export const fetchSubfigures = async (user, id) => {
+  const payload = await run(`figures/${id}/subfigures`, 'get', {
+    token: user.token,
+  })
   return payload
 }
 
@@ -43,9 +54,12 @@ export const fetchModalities = async name => {
   return payload
 }
 
-export const updateSubfigure = async values => {
+export const updateSubfigure = async (user, values) => {
   const {_id} = values
-  const payload = await run(`figures/${_id}`, 'patch', {data: values})
+  const payload = await run(`figures/${_id}`, 'patch', {
+    data: values,
+    token: user.token,
+  })
   return payload
 }
 

@@ -21,7 +21,7 @@ import {TASK_ASSIGNED, FIGURE_TO_REVIEW} from '../utils/constants'
 const checkParamId = id =>
   id === '0' || id === undefined || id === 'undefined' ? null : id
 
-const LabelPage = ({username}) => {
+const LabelPage = ({user}) => {
   // always receive taskid and docid, others are optional (0 is null)
   const {taskId, documentId} = useParams()
   let {figureId, subfigureId} = useParams()
@@ -35,14 +35,14 @@ const LabelPage = ({username}) => {
   const history = useHistory()
 
   // hooks for task and document to fill header
-  const task = useQuery(['task', taskId], () => fetchTaskById(taskId))
+  const task = useQuery(['task', taskId], () => fetchTaskById(user, taskId))
   const document = useQuery(['document', documentId], () =>
-    fetchDocumentById(documentId),
+    fetchDocumentById(user, documentId),
   )
 
   const figsQuery = useQuery(
     ['figures', documentId],
-    async () => fetchDocumentFigures(documentId),
+    async () => fetchDocumentFigures(user, documentId),
     {
       onSuccess: data => {
         if (!selfigId) {
@@ -75,7 +75,7 @@ const LabelPage = ({username}) => {
   const subfigQuery = useQuery(
     ['subfigures', selfigId, selsubfigId],
     async () => {
-      const subfigures = await fetchSubfigures(selFigQuery.data._id)
+      const subfigures = await fetchSubfigures(user, selFigQuery.data._id)
       let selected = null
       if (selsubfigId) {
         selected = subfigures.find(f => f._id === selsubfigId)
@@ -105,28 +105,31 @@ const LabelPage = ({username}) => {
     },
   )
 
-  const startMutation = useMutation(values => startTask(values), {
+  const startMutation = useMutation(values => startTask(user, values), {
     onSuccess: (data, values) => {
       queryClient.invalidateQueries(['task', taskId])
     },
   })
 
-  const finishMutation = useMutation(values => finishTask(values), {
+  const finishMutation = useMutation(values => finishTask(user, values), {
     onSuccess: _ => {
       queryClient.invalidateQueries(['task', taskId])
       //history.push('/inbox')
     },
   })
 
-  const subfigureMutation = useMutation(values => updateSubfigure(values), {
-    onSuccess: async (data, _) => {
-      if (data.refreshFigure) {
-        queryClient.invalidateQueries(['figures', documentId])
-        queryClient.invalidateQueries(['figure', selfigId])
-      }
-      queryClient.invalidateQueries(['subfigures', selfigId, selsubfigId])
+  const subfigureMutation = useMutation(
+    values => updateSubfigure(user, values),
+    {
+      onSuccess: async (data, _) => {
+        if (data.refreshFigure) {
+          queryClient.invalidateQueries(['figures', documentId])
+          queryClient.invalidateQueries(['figure', selfigId])
+        }
+        queryClient.invalidateQueries(['subfigures', selfigId, selsubfigId])
+      },
     },
-  })
+  )
 
   // update status to started for assigned tasks, triggers only
   // the first time a task is opened
@@ -161,7 +164,7 @@ const LabelPage = ({username}) => {
               onFinishClick={task =>
                 finishMutation.mutate({
                   _id: task._id,
-                  username: username,
+                  username: user.username,
                 })
               }
               finishEnabled={finishEnabled}

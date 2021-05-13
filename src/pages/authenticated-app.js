@@ -19,16 +19,16 @@ const AuthenticatedApp = ({user, logout}) => {
               <LoginPage username={user.username} />
             </Route>
             <Route path="/inbox">
-              <InboxPage username={user.username} />
+              <InboxPage user={user} />
             </Route>
             <Route path="/label/:taskId/:documentId/:figureId?/:subfigureId?">
-              <LabelPage />
+              <LabelPage user={user} />
             </Route>
             <Route path="/search">
               <SearchPage />
             </Route>
             <Route path="/">
-              <InboxPage />
+              <InboxPage user={user} />
             </Route>
           </Switch>
         </Router>

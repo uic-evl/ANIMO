@@ -78,19 +78,9 @@ const fetchDocumentFigures = (req, res, ctx) => {
     where: {docId: {equals: id}, type: {equals: constants.FIGURE}},
   })
   if (figures) {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        results: figures,
-      }),
-    )
+    return res(ctx.status(200), ctx.json(figures))
   } else {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: `Figures not found`,
-      }),
-    )
+    return res(ctx.status(403), ctx.json({message: `Figures not found`}))
   }
 }
 
@@ -231,6 +221,7 @@ const me = async (req, res, ctx) => {
       username: user.username,
       email: user.email,
       organization: user.organization,
+      token,
     }),
   )
 }

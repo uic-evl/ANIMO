@@ -13,8 +13,8 @@ export const login = async (username, password) => {
   if (!error) {
     localStorage.setItem(localStorageKey, payload.token)
     return {
-      user: {username: payload.username, token: payload.token},
-      message: `Welcome ${payload.user.username}`,
+      user: {username: payload.username},
+      message: `Welcome ${payload.username}`,
     }
   } else {
     return {user: null, message}

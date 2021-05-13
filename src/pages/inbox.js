@@ -6,9 +6,9 @@ import {Heading, Box} from '@chakra-ui/react'
 import {fetchTasks} from '../api/index'
 import {dateAccessor} from '../utils/format'
 
-const InboxPage = ({username}) => {
+const InboxPage = ({user}) => {
   const {isLoading, isError, data, error} = useQuery('tasks', () =>
-    fetchTasks(username),
+    fetchTasks(user, user.username),
   )
   const history = useHistory()
 

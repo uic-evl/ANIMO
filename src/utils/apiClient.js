@@ -30,7 +30,7 @@ async function client(endpoint, method, {data, token, params} = {}) {
 }
 
 async function run(endpoint, method, {data, token, params} = {}) {
-  const {error, payload, message} = client(endpoint, method, {
+  const {error, payload, message} = await client(endpoint, method, {
     data,
     token,
     params,
