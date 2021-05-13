@@ -1,6 +1,8 @@
 import {Box, Flex, Image, Badge, Text, Spacer} from '@chakra-ui/react'
 import {FIGURE_TO_REVIEW} from '../utils/constants'
 
+const CONTENT_ENDPOINT = process.env.REACT_APP_CONTENT_ENDPOINT
+
 const FigureCard = ({
   figure,
   selected,
@@ -22,10 +24,7 @@ const FigureCard = ({
         onClick(figure._id)
       }}
     >
-      <Image
-        borderRadius="md"
-        src={`http://localhost:8080/images${figure.uri}`}
-      />
+      <Image borderRadius="md" src={`${CONTENT_ENDPOINT}${figure.uri}`} />
       <Flex align="baseline" mt={1}>
         <Text ml={2} textTransform="uppercase" fontSize="10px">
           {figure.name}

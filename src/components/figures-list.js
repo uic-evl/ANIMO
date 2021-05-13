@@ -8,7 +8,7 @@ const DocumentFigures = ({figures, selectedId, onClick}) => {
   }
 
   return (
-    <Box backgroundColor={'gray.400'} height="100%">
+    <Box backgroundColor={'gray.400'} height="calc(100vh - 62px)">
       <Text pt="10px" pb="5px" fontSize="20px" align="center">
         Figures
       </Text>
@@ -16,7 +16,7 @@ const DocumentFigures = ({figures, selectedId, onClick}) => {
         w="100%"
         direction="column"
         spacing="5px"
-        maxHeight="78vh"
+        maxHeight="80vh"
         overflowY="scroll"
       >
         {figures.map(figure => (

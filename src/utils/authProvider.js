@@ -7,7 +7,7 @@ export const getToken = () => {
 }
 
 export const login = async (username, password) => {
-  const {error, payload, message} = await client('login', 'post', {
+  const {error, payload, message} = await client('users/login', 'post', {
     data: {username, password},
   })
   if (!error) {

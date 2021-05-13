@@ -257,7 +257,7 @@ export const worker = setupWorker(
   rest.get('/api/figures/:id/subfigures', fetchSubfigures),
   rest.get('/api/modalities/:name', fetchModalities),
   rest.patch('/api/figures/:id', updateFigure),
-  rest.post('/api/login', login),
-  rest.get('/api/me/:token', me),
-  rest.get('/api/user', user),
+  rest.post('/api/users/login', login),
+  rest.get('/api/users/me/:token', me),
+  rest.get('/api/users', user),
 )

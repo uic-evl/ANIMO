@@ -25,6 +25,7 @@ import Subfigure from '../components/subfigure'
 import {FIGURE_SKIPPED} from '../utils/constants'
 
 const Labeling = ({subfigure, modalities, caption, onClick}) => {
+  console.log(window.innerHeight)
   const [selectedModalityIds, setSelectedModalityIds] = useState([])
   const [isCloseUp, setIsCloseUp] = useState(false)
   const [needsCropping, setNeedsCropping] = useState(false)
@@ -51,6 +52,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
       observations: observations,
       composition: !isMultipane ? null : composition,
       applyToAll: applyToAll,
+      state: null,
     }
     onClick(subfigure._id, values)
   }
@@ -76,7 +78,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
   }, [subfigure])
 
   return (
-    <Flex width="100%" h="85vh" pt="2" direction="column">
+    <Flex width="100%" height="calc(100vh - 62px)" pt="2" direction="column">
       <Flex direction="row">
         <Box w="250px">
           <chakra.span fontStyle="italic" pl="1.5">
@@ -102,7 +104,6 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
           />
         </Box>
       </Flex>
-
       <Spacer />
       <Box pt="2.5" pr="10" pb="5">
         <Text>

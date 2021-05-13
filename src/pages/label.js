@@ -113,8 +113,8 @@ const LabelPage = ({user}) => {
 
   const finishMutation = useMutation(values => finishTask(user, values), {
     onSuccess: _ => {
-      queryClient.invalidateQueries(['task', taskId])
-      //history.push('/inbox')
+      // queryClient.invalidateQueries(['task', taskId])
+      history.push('/inbox')
     },
   })
 
