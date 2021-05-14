@@ -25,7 +25,6 @@ import Subfigure from '../components/subfigure'
 import {FIGURE_SKIPPED} from '../utils/constants'
 
 const Labeling = ({subfigure, modalities, caption, onClick}) => {
-  console.log(window.innerHeight)
   const [selectedModalityIds, setSelectedModalityIds] = useState([])
   const [isCloseUp, setIsCloseUp] = useState(false)
   const [needsCropping, setNeedsCropping] = useState(false)
@@ -114,7 +113,10 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
             <Stack direction="column" pt="1.5">
               <Checkbox
                 isChecked={isCloseUp}
-                onChange={e => setIsCloseUp(e.target.checked)}
+                onChange={e => {
+                  e.preventDefault()
+                  setIsCloseUp(e.target.checked)
+                }}
               >
                 Close-up image
               </Checkbox>
@@ -152,7 +154,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                 Compound figure - should be further separated
               </Checkbox>
               <Box pl="6">
-                <FormControl id="amount">
+                <FormControl id="amount" isDisabled={!isCompound}>
                   <Flex direction="row">
                     <FormLabel>
                       <chakra.span display="inline-flex" alignItems="center">
@@ -176,6 +178,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                   </Flex>
                 </FormControl>
                 <Checkbox
+                  isDisabled={!isCompound}
                   isChecked={isMultipane}
                   onChange={e => setIsMultipane(e.target.checked)}
                 >
@@ -187,10 +190,16 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                     onChange={value => setComposition(value)}
                   >
                     <HStack spacing="24px">
-                      <Radio value="heterogeneous" isDisabled={!isMultipane}>
+                      <Radio
+                        value="heterogeneous"
+                        isDisabled={!isMultipane || !isCompound}
+                      >
                         Heterogeneous
                       </Radio>
-                      <Radio value="homogeneous" isDisabled={!isMultipane}>
+                      <Radio
+                        value="homogeneous"
+                        isDisabled={!isMultipane || !isCompound}
+                      >
                         Homogeneous
                       </Radio>
                     </HStack>

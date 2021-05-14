@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 import {useQuery, useMutation, useQueryClient} from 'react-query'
 import {
@@ -11,11 +11,12 @@ import {
   fetchModalities,
   updateSubfigure,
 } from '../api/index'
-import {Box, Grid, GridItem} from '@chakra-ui/react'
+import {Box, Grid, GridItem, useDisclosure} from '@chakra-ui/react'
 import LabelHeader from '../components/label-header'
 import DocumentFigures from '../components/figures-list'
 import SelectedFigure from '../components/selected-figures'
 import Labeling from '../components/labeling'
+import DocumentDrawer from '../components/document-drawer'
 import {TASK_ASSIGNED, FIGURE_TO_REVIEW} from '../utils/constants'
 
 const checkParamId = id =>
@@ -33,6 +34,10 @@ const LabelPage = ({user}) => {
 
   const queryClient = useQueryClient()
   const history = useHistory()
+
+  const btnPDFRef = useRef()
+  const {isOpen, onOpen, onClose} = useDisclosure()
+  const [pageUrl, setPageUrl] = useState('')
 
   // hooks for task and document to fill header
   const task = useQuery(['task', taskId], () => fetchTaskById(user, taskId))
@@ -93,6 +98,10 @@ const LabelPage = ({user}) => {
         if (!selsubfigId) {
           setSelSubfigId(data.subfigures[0]._id)
         }
+
+        const contents = data.subfigures[0].uri.split('/')
+        const url = `/${contents[1]}/${contents[2]}/${contents[3]}.jpg`
+        setPageUrl(url)
       },
     },
   )
@@ -168,6 +177,8 @@ const LabelPage = ({user}) => {
                 })
               }
               finishEnabled={finishEnabled}
+              onShowPageClick={onOpen}
+              btnRef={btnPDFRef}
             />
           )}
         </GridItem>
@@ -247,6 +258,7 @@ const LabelPage = ({user}) => {
           )}
         </GridItem>
       </Grid>
+      <DocumentDrawer isOpen={isOpen} onClose={onClose} path={pageUrl} />
     </div>
   )
 }

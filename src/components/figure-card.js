@@ -1,5 +1,5 @@
 import {Box, Flex, Image, Badge, Text, Spacer} from '@chakra-ui/react'
-import {FIGURE_TO_REVIEW} from '../utils/constants'
+import {FIGURE_TO_REVIEW, FIGURE_SKIPPED} from '../utils/constants'
 
 const CONTENT_ENDPOINT = process.env.REACT_APP_CONTENT_ENDPOINT
 
@@ -40,6 +40,12 @@ export const StateBadge = ({state}) => {
   if (state === FIGURE_TO_REVIEW) {
     return (
       <Badge colorScheme={'red'} fontSize="10px">
+        {state}
+      </Badge>
+    )
+  } else if (state === FIGURE_SKIPPED) {
+    return (
+      <Badge colorScheme={'orange'} fontSize="10px">
         {state}
       </Badge>
     )

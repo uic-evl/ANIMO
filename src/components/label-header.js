@@ -2,7 +2,14 @@ import React from 'react'
 import {Flex, Button, Spacer, Box, chakra} from '@chakra-ui/react'
 import {TASK_IN_PROCESS} from '../utils/constants'
 
-const LabelHeader = ({task, document, onFinishClick, finishEnabled}) => {
+const LabelHeader = ({
+  task,
+  document,
+  onFinishClick,
+  finishEnabled,
+  onShowPageClick,
+  btnRef,
+}) => {
   const handleFinishClick = () => {
     onFinishClick(task)
   }
@@ -21,7 +28,14 @@ const LabelHeader = ({task, document, onFinishClick, finishEnabled}) => {
         </chakra.span>
       </Box>
       <Spacer />
-      <Button colorScheme="teal" variant="outline" mr="1.5" size="xs">
+      <Button
+        ref={btnRef}
+        colorScheme="teal"
+        variant="outline"
+        mr="1.5"
+        size="xs"
+        onClick={onShowPageClick}
+      >
         View PDF Page
       </Button>
       <Button

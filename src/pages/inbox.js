@@ -19,12 +19,13 @@ const InboxPage = ({user}) => {
         columns: [
           {Header: 'Id', accessor: '_id'},
           {Header: 'Description', accessor: 'description'},
+          {Header: 'Taxonomy', accessor: 'taxonomy'},
           {Header: 'Type', accessor: 'type'},
+          {Header: 'Status', accessor: 'status'},
           {
             Header: 'Creation Date',
             accessor: d => dateAccessor(d, 'creationDate'),
           },
-          {Header: 'Status', accessor: 'status'},
           {Header: 'Start Date', accessor: d => dateAccessor(d, 'startDate')},
           {Header: 'End Date', accessor: d => dateAccessor(d, 'endDate')},
           {Header: 'DocumentId', accessor: 'documentId'},
@@ -50,7 +51,7 @@ const InboxPage = ({user}) => {
   return (
     <div>
       <Heading as="h1" pb="2.5" pl="2.5">
-        Inbox
+        My Inbox
       </Heading>
       <Box pl="2.5" pr="2.5">
         <Table

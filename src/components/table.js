@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useTable, useFilters, useSortBy, usePagination} from 'react-table'
 import {
   Table as ChakraTable,
@@ -14,11 +14,15 @@ import {
   Center,
   Spacer,
   Select,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react'
 import {TriangleDownIcon, TriangleUpIcon} from '@chakra-ui/icons'
+import * as constants from '../utils/constants'
 
 const Table = ({columns, data, onRowClick, hiddenColumns = []}) => {
   const [filterInput, setFilterInput] = useState('')
+  const [filterStatus, setFilterStatus] = useState(constants.TASK_ASSIGNED)
 
   const {
     getTableProps,
@@ -50,19 +54,50 @@ const Table = ({columns, data, onRowClick, hiddenColumns = []}) => {
     usePagination,
   )
 
+  useEffect(() => {
+    setFilter('status', filterStatus)
+  }, [])
+
   const handleFilterChange = e => {
     const value = e.target.value || undefined
     setFilter('description', value)
     setFilterInput(value || '')
   }
 
+  const handleChangeStatus = e => {
+    const value = e.target.value
+    setFilter('status', value)
+    setFilterStatus(value)
+  }
+
   return (
     <>
-      <Input
-        value={filterInput}
-        onChange={handleFilterChange}
-        placeholder="Search description"
-      />
+      <Flex>
+        <FormControl mr="1.5">
+          <FormLabel>Description</FormLabel>
+          <Input
+            size="sm"
+            value={filterInput}
+            onChange={handleFilterChange}
+            placeholder="Search description"
+          />
+        </FormControl>
+
+        <FormControl w="200px">
+          <FormLabel>Status</FormLabel>
+          <Select size="sm" value={filterStatus} onChange={handleChangeStatus}>
+            <option value={constants.TASK_ASSIGNED}>
+              {constants.TASK_ASSIGNED}
+            </option>
+            <option value={constants.TASK_IN_PROCESS}>
+              {constants.TASK_IN_PROCESS}
+            </option>
+            <option value={constants.TASK_FINISHED}>
+              {constants.TASK_FINISHED}
+            </option>
+          </Select>
+        </FormControl>
+      </Flex>
 
       <ChakraTable {...getTableProps()} mt="10px" variant="striped">
         <Thead>

@@ -1,8 +1,6 @@
 import {run} from '../utils/apiClient'
 
 export const fetchTasks = async (user, username) => {
-  console.log(user)
-  console.log(username)
   const payload = await run('tasks', 'get', {
     params: {username},
     token: user.token,
@@ -57,7 +55,6 @@ export const fetchModalities = async name => {
 
 export const updateSubfigure = async (user, values) => {
   const {_id} = values
-  console.log(values)
   const payload = await run(`figures/${_id}`, 'patch', {
     data: values,
     token: user.token,
@@ -66,10 +63,10 @@ export const updateSubfigure = async (user, values) => {
 }
 
 export const me = async token => {
-  const data = await run(`users/me`, 'get', {token: token})
-  if (data) {
+  try {
+    const data = await run(`users/me`, 'get', {token: token})
     return {user: {username: data.username, token: data.token}}
-  } else {
-    return data
+  } catch (error) {
+    return null
   }
 }

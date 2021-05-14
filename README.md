@@ -14,7 +14,7 @@ Endpoint to the application API, _e.g. http://localhost:3000/api_. Our project's
 API is hosted in
 [https://github.com/uic-evl/curation-backend](https://github.com/uic-evl/curation-backend).
 
-**REACT_APP_CMS_ENDPOINT**
+**REACT_APP_CONTENT_ENDPOINT**
 
 Endpoint for the image and PDF files.
 
