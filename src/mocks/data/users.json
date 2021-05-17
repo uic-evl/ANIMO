@@ -1,0 +1,9 @@
+[
+    {
+        "_id": "1",
+        "username": "user1",
+        "password": "abc",
+        "status": "active",
+        "email": "email@email.com"
+    }
+]

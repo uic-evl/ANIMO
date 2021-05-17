@@ -1,0 +1,8 @@
+export const TASK_ASSIGNED = 'Assigned'
+export const TASK_IN_PROCESS = 'In Process'
+export const TASK_FINISHED = 'Finished'
+export const FIGURE = 'Figure'
+export const SUBFIGURE = 'Subfigure'
+export const FIGURE_TO_REVIEW = 'To Review'
+export const FIGURE_REVIEWED = 'Reviewed'
+export const FIGURE_SKIPPED = 'Skipped'
