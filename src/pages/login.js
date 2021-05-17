@@ -18,7 +18,11 @@ const LoginPage = ({login, message}) => {
         </FormControl>
         <FormControl>
           <FormLabel>Password</FormLabel>
-          <Input value={password} onChange={e => setPassword(e.target.value)} />
+          <Input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
         </FormControl>
         <Button
           isDisabled={username.trim() === '' || password.trim === ''}

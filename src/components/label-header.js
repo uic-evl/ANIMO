@@ -2,6 +2,8 @@ import React from 'react'
 import {Flex, Button, Spacer, Box, chakra} from '@chakra-ui/react'
 import {TASK_IN_PROCESS} from '../utils/constants'
 
+const CONTENT_ENDPOINT = process.env.REACT_APP_CONTENT_ENDPOINT
+
 const LabelHeader = ({
   task,
   document,
@@ -34,9 +36,15 @@ const LabelHeader = ({
         variant="outline"
         mr="1.5"
         size="xs"
-        onClick={onShowPageClick}
       >
-        View PDF Page
+        <a
+          href={`${CONTENT_ENDPOINT}${document.uri}`}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="pdf document"
+        >
+          View PDF
+        </a>
       </Button>
       <Button
         colorScheme="teal"

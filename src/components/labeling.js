@@ -103,7 +103,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
           />
         </Box>
       </Flex>
-      <Spacer />
+
       <Box pt="2.5" pr="10" pb="5">
         <Text>
           <chakra.span fontStyle="italic">Observations</chakra.span>
