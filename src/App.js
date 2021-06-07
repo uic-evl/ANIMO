@@ -36,6 +36,7 @@ function App() {
   useEffect(() => {
     const getUser = async () => {
       const token = await getToken()
+      console.log(token)
       if (token) {
         const response = await me(token)
         if (response) {

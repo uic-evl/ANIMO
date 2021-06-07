@@ -154,7 +154,7 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                 Compound figure - should be further separated
               </Checkbox>
               <Box pl="6">
-                <FormControl id="amount" isDisabled={!isCompound}>
+                <FormControl id="amount">
                   <Flex direction="row">
                     <FormLabel>
                       <chakra.span display="inline-flex" alignItems="center">
@@ -178,7 +178,6 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                   </Flex>
                 </FormControl>
                 <Checkbox
-                  isDisabled={!isCompound}
                   isChecked={isMultipane}
                   onChange={e => setIsMultipane(e.target.checked)}
                 >
@@ -190,16 +189,10 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
                     onChange={value => setComposition(value)}
                   >
                     <HStack spacing="24px">
-                      <Radio
-                        value="heterogeneous"
-                        isDisabled={!isMultipane || !isCompound}
-                      >
+                      <Radio value="heterogeneous" isDisabled={!isMultipane}>
                         Heterogeneous
                       </Radio>
-                      <Radio
-                        value="homogeneous"
-                        isDisabled={!isMultipane || !isCompound}
-                      >
+                      <Radio value="homogeneous" isDisabled={!isMultipane}>
                         Homogeneous
                       </Radio>
                     </HStack>
