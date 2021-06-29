@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import {StateBadge} from './figure-card'
 import FigureModal from './figure-modal'
+import Subfigure from './subfigure'
 
 const CONTENT_ENDPOINT = process.env.REACT_APP_CONTENT_ENDPOINT
 
@@ -26,16 +27,7 @@ const SelectedFigure = ({figure, subfigures, onClick, selectedSubfigureId}) => {
             Selected Figure:{' '}
             <chakra.span fontWeight="bold">{figure.name}</chakra.span>
           </Text>
-          <Box h="90%">
-            <Image
-              src={`${CONTENT_ENDPOINT}${figure.uri}`}
-              alt={figure.caption}
-              h="100%"
-              margin="auto"
-              onClick={onOpen}
-              cursor="zoom-in"
-            />
-          </Box>
+          <Subfigure subfigure={figure} />
         </Box>
         <Box>
           <chakra.span fontStyle="italic">Subfigures</chakra.span>

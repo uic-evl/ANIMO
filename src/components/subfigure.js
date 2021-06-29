@@ -8,13 +8,14 @@ const Subfigure = ({subfigure}) => {
 
   return (
     <Flex width="100%" backgroundColor="black" h="94%">
-      <Flex>
+      <Flex width="100%">
         <Image
           margin="auto"
           display="block"
           src={`${CONTENT_ENDPOINT}${subfigure.uri}`}
           cursor="zoom-in"
           onClick={onOpen}
+          maxH="100%"
         />
       </Flex>
       <FigureModal isOpen={isOpen} onClose={onClose} figure={subfigure} />
