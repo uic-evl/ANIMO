@@ -26,5 +26,5 @@ jobs:
         port: ${{secrets.PORT}}
         username: ${{ secrets.USER }}
         key: ${{ secrets.PASSWORD }}
-        source: "./build"
+        source: "./build/*"
         target: ${{secrets.PATH}}    
