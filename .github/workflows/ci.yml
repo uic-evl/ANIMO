@@ -20,7 +20,7 @@ jobs:
     - name: Install Packages
       run: npm install
       env:
-        npm_config_user: "root"
+        CI: false
     - name: Build page
       run: npm run build
     - name: SCP build folder
