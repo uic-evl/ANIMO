@@ -17,6 +17,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm 7
       run: npm i -g npm@7.5.4 --registry=https://registry.npmjs.org        
+      env:
+        npm_config_user: "root"
     - name: Install Packages
       run: npm install --silent
     - name: Build page
