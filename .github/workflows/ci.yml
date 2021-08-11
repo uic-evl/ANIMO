@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.17.1]
+        node-version: [15.14.4]
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
@@ -16,9 +16,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm 7
-      run: npm i -g npm@7.5.4 --registry=https://registry.npmjs.org              
+      run: npm i -g npm@7.7.6 --registry=https://registry.npmjs.org              
     - name: Install Packages
-      run: npm install
+      run: npm ci
       env:
         CI: false
     - name: Build page
