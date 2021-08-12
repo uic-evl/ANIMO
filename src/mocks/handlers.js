@@ -7,7 +7,6 @@ const test = []
 
 export const handlers = [
   rest.get('/api/tasks', (_, res, ctx) => {
-    console.log('test', test)
     test.push(1)
 
     return res(

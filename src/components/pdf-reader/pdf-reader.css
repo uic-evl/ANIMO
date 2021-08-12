@@ -1,0 +1,36 @@
+.pdf-page-container {
+  position: relative;
+  border-style: solid;
+  border-width: 12px;
+  border-radius: 8px;
+}
+
+.pdf-page-canvas {
+  overflow: hidden;
+  user-select: none;
+}
+
+.pdf-page-text-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pdf-page-text-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 0.2;
+  line-height: 1;
+}
+
+.pdf-page-text-layer > span {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}

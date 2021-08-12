@@ -37,7 +37,6 @@ const LabelPage = ({user}) => {
 
   const btnPDFRef = useRef()
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const [pageUrl, setPageUrl] = useState('')
 
   // hooks for task and document to fill header
   const task = useQuery(['task', taskId], () => fetchTaskById(user, taskId))
@@ -98,11 +97,6 @@ const LabelPage = ({user}) => {
         if (!selsubfigId) {
           setSelSubfigId(data.subfigures[0]._id)
         }
-
-        const contents = data.subfigures[0].uri.split('/')
-        const url = `/${contents[1]}/${contents[2]}/${contents[3]}.jpg`
-        console.log(contents[3])
-        setPageUrl('a')
       },
     },
   )
@@ -150,7 +144,7 @@ const LabelPage = ({user}) => {
         startMutation.mutate({_id: task.data._id})
       }
     }
-  }, [task.data])
+  }, [task.data, startMutation])
 
   return (
     <div>
@@ -260,14 +254,12 @@ const LabelPage = ({user}) => {
         </GridItem>
       </Grid>
 
-      {selFigQuery.data && document.data && (
-        <DocumentDrawer
-          isOpen={isOpen}
-          onClose={onClose}
-          figureName={selFigQuery.data?.name}
-          path={document.data.uri}
-        />
-      )}
+      <DocumentDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        figureName={selFigQuery.data?.name}
+        path={document.data?.uri}
+      />
     </div>
   )
 }

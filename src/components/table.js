@@ -56,7 +56,7 @@ const Table = ({columns, data, onRowClick, hiddenColumns = []}) => {
 
   useEffect(() => {
     setFilter('status', filterStatus)
-  }, [])
+  }, [filterStatus, setFilter])
 
   const handleFilterChange = e => {
     const value = e.target.value || undefined

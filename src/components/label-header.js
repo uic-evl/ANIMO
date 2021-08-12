@@ -38,7 +38,7 @@ const LabelHeader = ({
         size="xs"
         onClick={onShowPageClick}
       >
-        Open drawer
+        Open PDF page
       </Button>
       <Button
         ref={btnRef}
@@ -53,7 +53,7 @@ const LabelHeader = ({
           rel="noreferrer"
           aria-label="pdf document"
         >
-          View PDF
+          Download PDF
         </a>
       </Button>
       <Button

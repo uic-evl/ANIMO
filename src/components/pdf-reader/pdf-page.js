@@ -1,17 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
-
-const pageContainerStyle = {
-  position: 'relative',
-  borderStyle: 'solid',
-  borderWidth: '12px',
-  borderRadius: '8px',
-}
-
-const canvasStyle = {
-  overflow: 'hidden',
-  userSelect: 'none',
-}
+import './pdf-reader.css'
 
 const PdfPage = ({pdfDocument, pageNumber, scale}) => {
   const [textContent, setTextContent] = useState(null)
@@ -75,15 +64,11 @@ const PdfPage = ({pdfDocument, pageNumber, scale}) => {
   }, [textContent, viewport, printed])
 
   return (
-    <div className="pdf-page-container" style={pageContainerStyle}>
+    <div className="pdf-page-container">
       <div className="pdf-page-canvas">
         <canvas ref={textCanvasRef}></canvas>
       </div>
-      <div
-        className="pdf-page-text-layer"
-        style={canvasStyle}
-        ref={textContainerRef}
-      />
+      <div className="pdf-page-text-layer" ref={textContainerRef} />
     </div>
   )
 }
