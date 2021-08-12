@@ -101,7 +101,8 @@ const LabelPage = ({user}) => {
 
         const contents = data.subfigures[0].uri.split('/')
         const url = `/${contents[1]}/${contents[2]}/${contents[3]}.jpg`
-        setPageUrl(url)
+        console.log(contents[3])
+        setPageUrl('a')
       },
     },
   )
@@ -258,7 +259,15 @@ const LabelPage = ({user}) => {
           )}
         </GridItem>
       </Grid>
-      <DocumentDrawer isOpen={isOpen} onClose={onClose} path={pageUrl} />
+
+      {selFigQuery.data && document.data && (
+        <DocumentDrawer
+          isOpen={isOpen}
+          onClose={onClose}
+          figureName={selFigQuery.data?.name}
+          path={document.data.uri}
+        />
+      )}
     </div>
   )
 }

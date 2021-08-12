@@ -25,6 +25,7 @@ import Subfigure from '../components/subfigure'
 import {FIGURE_SKIPPED} from '../utils/constants'
 
 const Labeling = ({subfigure, modalities, caption, onClick}) => {
+  console.log(modalities)
   const [selectedModalityIds, setSelectedModalityIds] = useState([])
   const [isCloseUp, setIsCloseUp] = useState(false)
   const [needsCropping, setNeedsCropping] = useState(false)

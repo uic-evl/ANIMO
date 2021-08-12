@@ -36,6 +36,16 @@ const LabelHeader = ({
         variant="outline"
         mr="1.5"
         size="xs"
+        onClick={onShowPageClick}
+      >
+        Open drawer
+      </Button>
+      <Button
+        ref={btnRef}
+        colorScheme="teal"
+        variant="outline"
+        mr="1.5"
+        size="xs"
       >
         <a
           href={`${CONTENT_ENDPOINT}${document.uri}`}

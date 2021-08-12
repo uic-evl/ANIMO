@@ -7,7 +7,7 @@ const Matrix = ({modalities, subfigure, onClick}) => {
   const handleOnClickItem = id => {
     const ids = selectedIds.includes(id)
       ? selectedIds.filter(e => e !== id)
-      : [...selectedIds, id]
+      : [...selectedIds, id]    
     onClick(ids)
     setSelectedIds(ids)
   }
