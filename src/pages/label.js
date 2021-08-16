@@ -144,7 +144,7 @@ const LabelPage = ({user}) => {
         startMutation.mutate({_id: task.data._id})
       }
     }
-  }, [task.data, startMutation])
+  }, [task.data])
 
   return (
     <div>
