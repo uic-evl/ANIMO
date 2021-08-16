@@ -15,7 +15,7 @@ const Header = ({username, logout}) => {
       pb="2px"
     >
       <Box ml="10px">
-        <Text>Curation</Text>
+        <Text>Animo</Text>
       </Box>
       <Box ml="20px">
         <MenuItem to="/inbox">Inbox</MenuItem>
