@@ -11,7 +11,7 @@ const AuthenticatedApp = ({user, logout}) => {
   return (
     <Box bg="gray.600" minH="100vh" w="100%">
       <Box bg="white" margin="auto" maxW="1280px" minH="100vh">
-        <Router>
+        <Router basename="/animo">
           <Header username={user.username} logout={logout} />
 
           <Switch>

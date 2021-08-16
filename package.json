@@ -1,6 +1,7 @@
 {
   "name": "curation-labeling-interface",
   "version": "0.1.0",
+  "homepage": "https://runachay.evl.uic.edu/animo",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1.0.12",
