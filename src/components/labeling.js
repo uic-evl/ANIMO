@@ -19,6 +19,7 @@ import {
   HStack,
   Radio,
   Textarea,
+  Tooltip,
 } from '@chakra-ui/react'
 import Matrix from '../components/modalities-matrix'
 import Subfigure from '../components/subfigure'
@@ -120,39 +121,64 @@ const Labeling = ({subfigure, modalities, caption, onClick}) => {
               >
                 Close-up image
               </Checkbox>
-              <Checkbox
-                isChecked={needsCropping}
-                onChange={e => setNeedsCropping(e.target.checked)}
+              <Tooltip
+                label="Margins are too wide or include neighboring elements"
+                aria-label="Margins are too wide or include neighboring elements"
+                shouldWrapChildren
               >
-                Should be further cropped
-              </Checkbox>
-              <Checkbox
-                isChecked={isOvercropped}
-                onChange={e => setIsOvercropped(e.target.checked)}
+                <Checkbox
+                  isChecked={needsCropping}
+                  onChange={e => setNeedsCropping(e.target.checked)}
+                  shouldWrapChildren
+                >
+                  Should be further cropped
+                </Checkbox>
+              </Tooltip>
+              <Tooltip
+                label="Areas of the subfigure were over-cropped"
+                aria-label="Areas of the subfigure were over-cropped"
+                shouldWrapChildren
               >
-                Over-cropped
-              </Checkbox>
-              <Checkbox
-                isChecked={isOverfragmented}
-                onChange={e => setIsOverfragmented(e.target.checked)}
+                <Checkbox
+                  isChecked={isOvercropped}
+                  onChange={e => setIsOvercropped(e.target.checked)}
+                >
+                  Over-cropped
+                </Checkbox>
+              </Tooltip>
+              <Tooltip
+                label="Segmentation divided a subfigure into smaller elements"
+                aria-label="Segmentation divided a subfigure into smaller elements"
+                shouldWrapChildren
               >
-                Over-fragmented
-              </Checkbox>
-              <Checkbox
+                <Checkbox
+                  isChecked={isOverfragmented}
+                  onChange={e => setIsOverfragmented(e.target.checked)}
+                >
+                  Over-fragmented
+                </Checkbox>
+              </Tooltip>
+              {/* <Checkbox
                 isChecked={isMissingSubfigures}
                 onChange={e => setIsMissingSubfigures(e.target.checked)}
               >
                 Missing subfigures
-              </Checkbox>
+              </Checkbox> */}
             </Stack>
             <Spacer />
             <Stack pt="1.5">
-              <Checkbox
-                isChecked={isCompound}
-                onChange={e => setIsCompound(e.target.checked)}
+              <Tooltip
+                label="(e.g, panels A and B are still shown together)"
+                aria-label="(e.g, panels A and B are still shown together)"
+                shouldWrapChildren
               >
-                Compound figure - should be further separated
-              </Checkbox>
+                <Checkbox
+                  isChecked={isCompound}
+                  onChange={e => setIsCompound(e.target.checked)}
+                >
+                  Compound figure - should be further separated
+                </Checkbox>
+              </Tooltip>
               <Box pl="6">
                 <FormControl id="amount">
                   <Flex direction="row">
